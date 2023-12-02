@@ -20,41 +20,73 @@ def guest_consol():
         print()
         print()
 
-        #Art piece menu
-        if mLevelOneChoice == '1':
-            print("~~~~~~~~~~~~~~~~ ART PIECES ~~~~~~~~~~~~~~~~")
-        while mLevelOneChoice == '1':
-            print("Please input the kind of art pieces you're interested in veiwing")
-            mLeveltwoChoice = input("(1) Paintings \t (2) Sculptures \t (3) Statues \t (4) Other \t (0) Go Up a Level: ")
-            print()
-            print()
-            if mLeveltwoChoice == '0':
-                break
 
-        #Artists menu
-        if mLevelOneChoice == '2':
-            print("~~~~~~~~~~~~~~~~ ARTISTS ~~~~~~~~~~~~~~~~")
-        while mLevelOneChoice == '2':
-            print("Please input the part of the database you're interested in veiwing")
-            mLeveltwoChoice = input("Please type the name of the artist you're interested in \t (0) Go Up a Level: ")
+        #Art piece menu
+        while mLevelOneChoice == '1':
+            print("~~~~~~~~~~~~~~~~ ART PIECES ~~~~~~~~~~~~~~~~")
+            print("Please input the kind of art pieces you're interested in veiwing")
+            mLevelTwoChoice = input("(1) Paintings \t (2) Sculptures \t (3) Statues \t (4) Other \t (0) Go Up a Level: ")
             print()
             print()
-            if mLeveltwoChoice == '0':
+
+            if mLevelTwoChoice == '1':
+                searchArtObjects("Paintings")
+            elif mLevelTwoChoice == '2':
+                searchArtObjects("Sculptures")
+            elif mLevelTwoChoice == '3':
+                searchArtObjects("Statues")
+            elif mLevelTwoChoice == '4':
+                searchArtObjects("Other")
+            elif mLeveltwoChoice == '0':
                 break
+            else:
+                print("Invalid Option")
+                print()
+
+
+
+        #Artists menu 
+        while mLevelOneChoice == '2':
+            print("~~~~~~~~~~~~~~~~ ARTISTS ~~~~~~~~~~~~~~~~")
+            print("Please input the part of the database you're interested in veiwing")
+            mLevelTwoChoice = input("(1) Search Artist by Name \t (2) Search Artist by Country of Origin \t (0) Go Up a Level: ")
+            print()
+            print()
+
+            if mLevelTwoChoice == '1':
+                searchArtists("Name")
+            elif mLevelTwoChoice == '2':
+                searchArtists("Country")
+            elif mLeveltwoChoice == '0':
+                break
+            else:
+                print("Invalid Option")
+                print()
+
 
         #Exhibitions Menu
-        if mLevelOneChoice == '3':
-            print("~~~~~~~~~~~~~~~~ EXHIBITIONS ~~~~~~~~~~~~~~~~")
         while mLevelOneChoice == '3':
+            print("~~~~~~~~~~~~~~~~ EXHIBITIONS ~~~~~~~~~~~~~~~~")
             print("Please input the part of the database you're interested in veiwing")
-            mLeveltwoChoice = input("(1) Search Exhibitions by ID \t (2) Search Exhibitions by name \t (0) Go Up a Level: ")
+            mLevelTwoChoice = input("(1) Search Exhibitions by ID \t (2) Search Exhibitions by name \t (0) Go Up a Level: ")
             print()
             print()
-            if mLeveltwoChoice == '0':
+            
+            if mLevelTwoChoice == '1':
+                searchExhibitions("ID")
+            elif mLevelTwoChoice == '2':
+                searchExhibitions("Name")
+            elif mLeveltwoChoice == '0':
                 break
+            else:
+                print("Invalid Option")
+                print()
         
         if mLevelOneChoice == '0':
             break
+        else:
+            print("Invalid Option")
+            print()
 
 
 
