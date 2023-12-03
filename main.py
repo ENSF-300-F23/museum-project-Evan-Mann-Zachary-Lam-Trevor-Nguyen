@@ -1,15 +1,68 @@
 import mysql.connector
 
-
-def admin_consol():
+def searchArtObjects(searchItem, cur):
+    pass
+def searchArtists(searchItem, cur):
+    pass
+def searchExhibitions(searchItem, cur):
     pass
 
 
-def data_entry_consol():
+
+
+
+def admin_console():
     pass
 
 
-def guest_consol():
+def data_entry_console():
+    mLevelOneChoice = ''
+    mLevelTwoChoice = ''
+    mLevelThreeChoice = ''
+    while True:
+        print("~~~~~~~~~~~~~~~~ Database Search ~~~~~~~~~~~~~~~~")
+        print("Please choose the part of the data base you wish to view")
+        print("(1) Art Objects \t (2) Artists \t (3) Permanent Collection \t (4) Borrowed Collection")
+        mLevelOneChoice = input("(5) Exhibitions \t (6) Seperate Collections \t (0) Quit the Program : ")
+        print()
+        print()
+
+        #Art Objects menu
+        while mLevelOneChoice == '1':
+            break
+        #Artists menu
+        while mLevelOneChoice == '2':
+            break
+
+        #Permanent Collection menu
+        while mLevelOneChoice == '3':
+            break
+
+        #Borrowed Collection menu
+        while mLevelOneChoice == '4':
+            break
+
+        #Exhibitions menu
+        while mLevelOneChoice == '5':
+            break
+
+        #Seperate Collections menu
+        while mLevelOneChoice == '6':  
+            break
+        
+
+        if mLevelOneChoice == '0':
+            break
+        else:
+            print("Invalid Option")
+            print()
+
+
+
+
+
+
+def guest_console():
     mLevelOneChoice = ''
     mLevelTwoChoice = ''
     mLevelThreeChoice = ''
@@ -37,7 +90,7 @@ def guest_consol():
                 searchArtObjects("Statues")
             elif mLevelTwoChoice == '4':
                 searchArtObjects("Other")
-            elif mLeveltwoChoice == '0':
+            elif mLevelTwoChoice == '0':
                 break
             else:
                 print("Invalid Option")
@@ -57,11 +110,12 @@ def guest_consol():
                 searchArtists("Name")
             elif mLevelTwoChoice == '2':
                 searchArtists("Country")
-            elif mLeveltwoChoice == '0':
+            elif mLevelTwoChoice == '0':
                 break
             else:
                 print("Invalid Option")
                 print()
+
 
 
         #Exhibitions Menu
@@ -76,12 +130,14 @@ def guest_consol():
                 searchExhibitions("ID")
             elif mLevelTwoChoice == '2':
                 searchExhibitions("Name")
-            elif mLeveltwoChoice == '0':
+            elif mLevelTwoChoice == '0':
                 break
             else:
                 print("Invalid Option")
                 print()
         
+
+
         if mLevelOneChoice == '0':
             break
         else:
@@ -127,10 +183,10 @@ if __name__ == "__main__":
     #cur.execute("use olympicarchery")
     
     if selection == '1':
-        admin_consol()
+        admin_console()
     elif selection == '2':
-        data_entry_consol()
+        data_entry_console()
     else:
-        guest_consol()
+        guest_console()
 
     print("Thanks for using the program")
