@@ -27,8 +27,8 @@ CREATE TABLE ART_OBJECT
   Object_type     VARCHAR(9)        NOT NULL,
   Artist_name     VARCHAR(50),
   PRIMARY KEY (ID_no),
-  FOREIGN KEY (Artist_name) REFERENCES ARTIST(Name),
-  CONSTRAINT ARTFK CHECK (Object_type IN ('PAINTING', 'SCULPTURE', 'STATUE', 'OTHER')) );
+  FOREIGN KEY (Artist_name) REFERENCES ARTIST(Artist_name),
+  CONSTRAINT ARTFK CHECK (Object_type IN ('Painting', 'Sculpture', 'Statue', 'Other')) );
   
   
 
@@ -90,20 +90,8 @@ CREATE TABLE BORROWED
   Date_returned   DATE,
   PRIMARY KEY (ID_no),
   FOREIGN KEY (ID_no) REFERENCES ART_OBJECT(ID_no) );
-  
-  
-  
-CREATE TABLE ARTIST 
-( Artist_name     VARCHAR(50)		NOT NULL,
-  Date_born       DATE,
-  Date_died       DATE,
-  Country_of_origin VARCHAR(50),
-  Epoch           VARCHAR(50),
-  Main_style      VARCHAR(50),
-  Descr     	  TEXT,
-  PRIMARY KEY (Artist_name) );
-  
-  
+
+
 
 CREATE TABLE EXHIBITION
 ( EX_ID   		  CHAR(5)			NOT NULL,
@@ -119,7 +107,7 @@ CREATE TABLE DISPLAYED_IN
   ID_no           CHAR(9)           NOT NULL,
   PRIMARY KEY (ID_no, EID),
   FOREIGN KEY (ID_no) REFERENCES ART_OBJECT(ID_no),
-  FOREIGN KEY (EID) REFERENCES EXHIBITIONS(EX_ID) );
+  FOREIGN KEY (EID) REFERENCES EXHIBITION(EX_ID) );
   
   
 
@@ -133,7 +121,28 @@ CREATE TABLE COLLECTION
   CP_last_name    VARCHAR(50),
   PRIMARY KEY (C_name) );
   
-  
+
+            
+INSERT INTO ARTIST 
+VALUES 		('Juan Fernández', '1580-02-06', '1630-10-12', 'Spanish', 'Renaissance', 'Baroque', 'Spanish still-life painter.'),
+			('Pablo Picasso', '1881-10-25', '1973-04-08', 'Spanish', 'Modern', 'Cubism', 'Renowned painter, sculptor, and co-founder of Cubism.'),
+			('Cornelius Norbertus Gijsbrechts', '1630-03-27', '1683-07-06', 'Flemish', 'Baroque', 'Trompe l''oeil', 'Known for trompe l''oeil paintings.'),
+			('Juan Gris', '1887-03-23', '1927-05-11', 'Spain', 'Modern', 'Cubism', 'Juan Gris was a Spanish painter and sculptor born in Madrid.'),
+			('Pietro Torrigiano', '1472-08-17', '1528-02-13', 'Italy', 'Renaissance', 'Sculpture', 'Pietro Torrigiano was an Italian sculptor of the Renaissance.'),
+			('Hans Holbein the Younger', '1497-03-30', '1543-05-28', 'Germany', 'Renaissance', 'Portraiture', 'Hans Holbein the Younger was a German painter and printmaker.'),
+			('Marcus Gheeraerts the Younger', '1561-09-21', '1635-12-10', 'Flanders', 'Renaissance', 'Portraiture', 'Marcus Gheeraerts the Younger was a Flemish painter, known for his portraits.'),
+			('Simone Leigh', '1967-01-01', null, 'American', 'Modern', 'Contemporary art', 'Sculptor and contemporary artist.'),
+			('Theaster Gates', '1973-08-28', null, 'American', 'Modern', 'Conceptual art', 'Multidisciplinary artist.'),
+			('Robert Pruitt', null, null, 'American', 'Modern', 'Contemporary art', 'Known for African American portraiture and mixed-media art.'),
+			('Jakob Orfèvre Blanck', null, null, 'French', 'Renaissance', 'Baroque', 'Cabinetmaker known for crafting decorative furniture.'),
+			('Jean-Auguste-Dominique Ingres', '1780-08-29', '1867-01-14', 'French', 'Romanticism', 'Neoclassicism', 'Renowned painter known for "The Great Odalisque".'),
+			('Jacques-Louis David', '1748-08-30', '1825-12-29', 'French', 'Neoclassicism', 'Neoclassical art', 'Famous for "The Sabines" and his neoclassical style.'),
+			('Giovanni Paolo Panini', '1691-06-17', '1765-10-21', 'Italian', 'Baroque', 'Vedutism', 'Painter known for vedute paintings of Rome.'),
+			('Eugenio Landesio', '1810-12-13', '1879-06-29', 'Italian', 'Romanticism', 'Landscape painting', 'Known for landscape paintings of Mexico.'),
+			('John II Cleveley', null, null, 'English', 'Romanticism', 'Maritime art', 'Painter known for maritime landscapes, particularly of the Thames.'),
+            ('Francesco Righetti', 	'1835-06-29', '1917-08-01', 'Swiss', 'Neoclassicism', 'Neoclassical art', 'Architect known for his work in bronze sculpture.');
+
+
 
 INSERT INTO ART_OBJECT
 VALUES      ('111363504','1544','Field Armor of King Henry VIII of England','Armor made for Henry VIII.','Italian, Milan or Brescia','Renaissance','Permanent','Other',null),
@@ -156,6 +165,8 @@ VALUES      ('111363504','1544','Field Armor of King Henry VIII of England','Arm
             ('555888385','1857','Vue de Real del Monte, province de Hidalgo (Mexique)','Painting of Real del Monte','Italian','Romanticism','Borrowed','Painting','Eugenio Landesio'),
             ('556140261','1810','Napoléon en Mars pacificateur','Statue of Napoleon','French','Napoleonic','Borrowed','Sculpture','Francesco Righetti');
 
+
+
 INSERT INTO PAINTING
 VALUES      ('103967204','Oil','Oak','Renaissance'),
 			('107937322','Oil','Oak','Renaissance'),
@@ -169,13 +180,19 @@ VALUES      ('103967204','Oil','Oak','Renaissance'),
             ('555888385','Oil','Canvas','Landscape'),
             ('556140261','Oil','Canvas','Maritime');
 
+
+
 INSERT INTO SCULPTURE
 VALUES      ('375146957','Salt-fired porcelain',44.5,3.1,'Modern'),
 			('126339216','Polychrome terracotta',34,28.1,null);
 
+
+
 INSERT INTO STATUE
 VALUES     ('371155323','High fire stoneware',54.9,40.8,'Conceptual'),
 		   ('556140261','Bronze',46,56.3,'Neoclassical');
+
+
 
 INSERT INTO OTHER
 VALUES      ('111363504','Armor','Maximilian'),
@@ -184,12 +201,14 @@ VALUES      ('111363504','Armor','Maximilian'),
             ('388971469','Pastel Drawing','Contemporary'),
             ('437018134','Chest','Baroque');
 
+
+
 INSERT INTO PERMANENT_COLLECTION
 VALUES      ('111363504','Displayed',23622.97,'1931-08-03'),
             ('198404671','Displayed',1042.99,'1995-04-15'),
             ('120297468','Stored',2033.14,'1958-12-12'),
             ('126339216','Displayed',6034.12,'1936-01-01'),
-            ('103967204','Loaned',3102,82,'1940-01-01'),
+            ('103967204','Loaned',3102.82,'1940-01-01'),
             ('107937322','Stored',27332.26,'2017-01-01'),
             ('260892373','Displayed',16953.00,'1956-01-01'),
             ('230840004','Loaned',4647.65,'1964-11-25'),
@@ -198,34 +217,27 @@ VALUES      ('111363504','Displayed',23622.97,'1931-08-03'),
             ('375146957','Loaned',1387.75,'2019-08-05'),
             ('371155323','Displayed',3112.58,'2020-02-09'),
             ('388971469','Loaned',1905.60,'2020-06-02');
-            
+
+
+
 INSERT INTO BORROWED
 VALUES      ('437018134','Department of Art Objects from the Middle Ages, Renaissance and Modern Times','2000-04-09','2002-07-08'),
 			('556140261','Department of Art Objects from the Middle Ages, Renaissance and Modern Times','2019-06-30','2021-10-04'),
             ('489783717','Department of Paintings','2004-01-27','2006-02-16'),
             ('423318619','Department of Paintings','1997-11-12','1998-06-03'),
             ('503335428','Department of Paintings','1994-09-10','1996-11-25'),
-            ('555888385','Department of Paintings','1981-03-03','1983-04-19'),
-            ('556140261','Department of Paintings','2006-12-06','2008-08-10');
-            
-INSERT INTO ARTIST 
-VALUES 		('Juan Fernández', '1580-02-06', '1630-10-12', 'Spanish', 'Renaissance', 'Baroque', 'Spanish still-life painter.'),
-			('Pablo Picasso', '1881-10-25', '1973-04-08', 'Spanish', 'Modern', 'Cubism', 'Renowned painter, sculptor, and co-founder of Cubism.'),
-			('Cornelius Norbertus Gijsbrechts', '1630-03-27', '1683-07-06', 'Flemish', 'Baroque', 'Trompe l''oeil', 'Known for trompe l''oeil paintings.'),
-			('Juan Gris', '1887-03-23', '1927-05-11', 'Spain', 'Modern', 'Cubism', 'Juan Gris was a Spanish painter and sculptor born in Madrid.'),
-			('Pietro Torrigiano', '1472', '1528', 'Italy', 'Renaissance', 'Sculpture', 'Pietro Torrigiano was an Italian sculptor of the Renaissance.'),
-			('Hans Holbein the Younger', '1497', '1543', 'Germany', 'Renaissance', 'Portraiture', 'Hans Holbein the Younger was a German painter and printmaker.'),
-			('Marcus Gheeraerts the Younger', '1561', '1635/36', 'Flanders', 'Renaissance', 'Portraiture', 'Marcus Gheeraerts the Younger was a Flemish painter, known for his portraits.'),
-			('Simone Leigh', '1967-01-01', null, 'American', 'Modern', 'Contemporary art', 'Sculptor and contemporary artist.'),
-			('Theaster Gates', '1973-08-28', null, 'American', 'Modern', 'Conceptual art', 'Multidisciplinary artist.'),
-			('Robert Pruitt', null, null, 'American', 'Modern', 'Contemporary art', 'Known for African American portraiture and mixed-media art.'),
-			('Jakob Orfèvre Blanck', null, null, 'French', 'Renaissance', 'Baroque', 'Cabinetmaker known for crafting decorative furniture.'),
-			('Jean-Auguste-Dominique Ingres', '1780-08-29', '1867-01-14', 'French', 'Romanticism', 'Neoclassicism', 'Renowned painter known for "The Great Odalisque".'),
-			('Jacques-Louis David', '1748-08-30', '1825-12-29', 'French', 'Neoclassicism', 'Neoclassical art', 'Famous for "The Sabines" and his neoclassical style.'),
-			('Giovanni Paolo Panini', '1691-06-17', '1765-10-21', 'Italian', 'Baroque', 'Vedutism', 'Painter known for vedute paintings of Rome.'),
-			('Eugenio Landesio', '1810-12-13', '1879-06-29', 'Italian', 'Romanticism', 'Landscape painting', 'Known for landscape paintings of Mexico.'),
-			('John II Cleveley', null, null, 'English', 'Romanticism', 'Maritime art', 'Painter known for maritime landscapes, particularly of the Thames.'),
-            ('Francesco Righetti', 	1835, 1917, 'Swiss', 'Neoclassicism', 'Neoclassical art', 'Architect known for his work in bronze sculpture.');
+            ('555888385','Department of Paintings','1981-03-03','1983-04-19');
+
+
+
+INSERT INTO EXHIBITION
+VALUES 		('TU550', '2022-10-10', '2023-01-08', 'The Tudors: Art and Majesty in Renaissance England'),
+			('CU993', '2023-10-17', '2023-01-22', 'Cubism and the Trompe l''Oeil Tradition'),
+			('BP041', '2022-09-09', '2023-02-05', 'Hear Me Now: The Black Potters of Old Edgefield, South Carolina'),
+			('ME171', '2023-07-01', '2023-08-10', 'Timeless Expressions: A Retrospective of Masterpieces'),
+			('NA405', '2023-08-25', '2023-10-05', 'Transcending Timelines: Artistry Unveiled');
+
+
 
 INSERT INTO DISPLAYED_IN
 VALUES 		('TU550', '111363504'),
@@ -248,15 +260,10 @@ VALUES 		('TU550', '111363504'),
 			('NA405', '555888385'),
 			('NA405', '556140261');
 
-INSERT INTO EXHIBITION
-VALUES 		('TU550', '2022-10-10', '2023-01-08', 'The Tudors: Art and Majesty in Renaissance England'),
-			('CU993', '2023-10-17', '2023-01-22', 'Cubism and the Trompe l''Oeil Tradition'),
-			('BP041', '2022-09-09', '2023-02-05', 'Hear Me Now: The Black Potters of Old Edgefield, South Carolina'),
-			('ME171', '2023-07-01', '2023-08-10', 'Timeless Expressions: A Retrospective of Masterpieces'),
-			('NA405', '2023-08-25', '2023-10-05', 'Transcending Timelines: Artistry Unveiled');
+
 
 INSERT INTO COLLECTION
 VALUES 		('Masterpieces of the Louvre','Museum','Artworks essential to history and the history of art, masterpieces bear witness to the wealth of the Louvre’s collections and the wide range of artistic practices used around the world and through the ages.','123 Rue de la Galerie
-Paris, France','33123456789', 'Emily Parker'),
+Paris, France', '33123456789', 'Emily', 'Parker'),
 			('National Museums Recovery','Museum','Artworks retrieved in Germany and brought back to France after World War II.', '789 Avenue de la Restitution
-Paris, France','33198765432', 'David Thompson');
+Paris, France','33198765432', 'David', 'Thompson');
