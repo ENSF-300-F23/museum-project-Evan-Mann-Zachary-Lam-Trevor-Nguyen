@@ -1,7 +1,23 @@
 import mysql.connector
 
+#Global Functions
+def getCurArtistNames(cur):
+    cur.execute("select artist_name from artist;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
+def getCurArtIDs(cur):
+    cur.execute("select ID_no from art_object;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
+def getCurExIDs(cur):
+    cur.execute("select EX_ID from Exhibition;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
 #Guest user search functions
-def searchArtObjects(searchItem, cursor):
+def searchArtObjects(searchItem, cur):
     instr = ""
     join = ""
 
@@ -9,7 +25,7 @@ def searchArtObjects(searchItem, cursor):
     showCollection = input("Do you want to see the collection each piece comes from (Y or N): ")
     showDetailedInfo = input("Would you like extra details such as the pieces origin or epoch (Y or N): ")
 
-def searchArtists(searchItem, cursor):
+def searchArtists(searchItem, cur):
     instr = ""
     join = ""
 
@@ -26,7 +42,7 @@ def searchArtists(searchItem, cursor):
 
     # This should print 
 
-def searchExhibitions(searchItem, cursor):
+def searchExhibitions(searchItem, cur):
     instr = ""
     join = ""
 
@@ -37,21 +53,23 @@ def searchExhibitions(searchItem, cursor):
         artistEpoch = input("Please input the name of the exhibit you're interested in: ")
 
 
+
+
+
+
+
+
 #Data entry user input/delete functions
-def editArtObj(cursor):
+def editArtObj(cur, actionType = None):
     print("What kind of action would you like to do")
-    selecting = True
-    while selecting:
+    while actionType == None:
         s = input("(1) Insert \t (2) Update \t (3) Delete: ")
         if (s == '1'):
             actionType = "INSERT"
-            selecting = False
         elif (s == '2'):
             actionType = "UPDATE"
-            selecting = False
         elif (s == '3'):
             actionType = "DELETE"
-            selecting = False
         else:
             print("Invalid input")
             print()
@@ -74,6 +92,7 @@ def editArtObj(cursor):
                 paint_type = input("Please input the paint type: ")
                 Drawn_on = input("Please input the medium the painting is drawn on: ")
                 style = input("Please input the style of the painting: ")
+                secondary_Command = f"INSERT INTO PAINTING VALUES ({ID_no},{paint_type},{Drawn_on},{style});"
                 selecting = False
             elif (i == '2'):
                 objType = "Statue"
@@ -81,6 +100,7 @@ def editArtObj(cursor):
                 height = input("Please input the height of the statue: ")
                 weight = input("Please input the weight of the statue: ")
                 style = input("Please input the style of the statue: ")
+                secondary_Command = f"INSERT INTO STATUE VALUES ({ID_no},{material},{height},{weight},{style});"
                 selecting = False
             elif (i == '3'):
                 objType = "Sculpture"
@@ -88,25 +108,32 @@ def editArtObj(cursor):
                 height = input("Please input the height of the sculpture: ")
                 weight = input("Please input the weight of the sculpture: ")
                 style = input("Please input the style of the sculpture: ")
+                secondary_Command = f"INSERT INTO SCULPTURE VALUES ({ID_no},{material},{height},{weight},{style});"
                 selecting = False
             elif (i == '3'):
                 objType = "Other"
                 other_type = input("Please input the type of this object: ")
                 style = input("Please input this objects style: ")
+                secondary_Command = f"INSERT INTO OTHER VALUES ({ID_no},{other_type},{style});"
                 selecting = False
             else:
                 print("Invalid input")
                 print()
         Artist_name = input("Please input the name of the artist who created the art object: ")
-        #COMPLETE SQL COMMAND CREATION AND EXECUTION
+        art_obj_command = f"INSERT INTO ART_OBJECT VALUES ({ID_no},{Year_created},{Title},{Descr},{Origin},{Epoch},{Collection_type},{objType},{Artist_name});"
+        cur.execute(art_obj_command)
+        cur.execute(secondary_Command)
+        
 
     if (actionType == "UPDATE"):
         print("What are you updating")
         selecting = True
         while selecting:
             i = input("(1) Art Object \t (2) Painting \t (3) Statue \t (4) Sculpture \t (5) Other: ")
-            #if (i == '1'):
-
+            if (i == '1'):
+                test = input("Do you want to edit the artist? Y or N")
+                if (test == 'Y'):
+                    editArtists(cur, "UPDATE")
             #elif (i == '2'):
 
             #elif (i == '3'):
@@ -120,16 +147,88 @@ def editArtObj(cursor):
                 #print()
 
 
-def editArtists(cursor):
-    pass
-def editPermCollection(cursor):
-    pass
-def editBorrowCollection(cursor):
-    pass
-def editExhibitions(cursor):
-    pass
-def editSepCollections(cursor):
-    pass
+def editArtists(cur, actionType = None):
+    if actionType == None:
+        print("What kind of action would you like to do")
+    while actionType == None:
+        s = input("(1) Insert \t (2) Update \t (3) Delete: ")
+        if (s == '1'):
+            actionType = "INSERT"
+        elif (s == '2'):
+            actionType = "UPDATE"
+        elif (s == '3'):
+            actionType = "DELETE"
+        else:
+            print("Invalid input")
+    print(f"Edit artists with {actionType} called")
+
+
+def editPermCollection(cur, actionType = None):
+    if actionType == None:
+        print("What kind of action would you like to do")
+    while actionType == None:
+        s = input("(1) Insert \t (2) Update \t (3) Delete: ")
+        if (s == '1'):
+            actionType = "INSERT"
+        elif (s == '2'):
+            actionType = "UPDATE"
+        elif (s == '3'):
+            actionType = "DELETE"
+        else:
+            print("Invalid input")
+            print()
+
+
+def editBorrowCollection(cur, actionType = None):
+    if actionType == None:
+        print("What kind of action would you like to do")
+    while actionType == None:
+        s = input("(1) Insert \t (2) Update \t (3) Delete: ")
+        if (s == '1'):
+            actionType = "INSERT"
+        elif (s == '2'):
+            actionType = "UPDATE"
+        elif (s == '3'):
+            actionType = "DELETE"
+        else:
+            print("Invalid input")
+            print()
+
+
+def editExhibitions(cur, actionType = None):
+    if actionType == None:
+        print("What kind of action would you like to do")
+    while actionType == None:
+        s = input("(1) Insert \t (2) Update \t (3) Delete: ")
+        if (s == '1'):
+            actionType = "INSERT"
+        elif (s == '2'):
+            actionType = "UPDATE"
+        elif (s == '3'):
+            actionType = "DELETE"
+        else:
+            print("Invalid input")
+            print()
+
+
+def editSepCollections(cur, actionType = None):
+    if actionType == None:
+        print("What kind of action would you like to do")
+    while actionType == None:
+        s = input("(1) Insert \t (2) Update \t (3) Delete: ")
+        if (s == '1'):
+            actionType = "INSERT"
+        elif (s == '2'):
+            actionType = "UPDATE"
+        elif (s == '3'):
+            actionType = "DELETE"
+        else:
+            print("Invalid input")
+            print()
+
+
+
+
 
 
 #Admin functions
@@ -322,11 +421,15 @@ if __name__ == "__main__":
         port=3306,
         user= username,              
         password= password)   
-    ### Get a cursor
+    ### Get a cur
     cur = cnx.cursor()
     ### Execute a query
     cur.execute("USE MUSEUM;")
-    
+
+    test = getCurExIDs(cur)
+    if 'TU550' in test:
+        print("test")
+
     if selection == '1':
         admin_console()
     elif selection == '2':
