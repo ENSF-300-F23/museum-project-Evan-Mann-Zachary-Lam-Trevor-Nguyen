@@ -39,7 +39,87 @@ def searchExhibitions(searchItem, cursor):
 
 #Data entry user input/delete functions
 def editArtObj(cursor):
-    pass
+    print("What kind of action would you like to do")
+    selecting = True
+    while selecting:
+        s = input("(1) Insert \t (2) Update \t (3) Delete: ")
+        if (s == '1'):
+            actionType = "INSERT"
+            selecting = False
+        elif (s == '2'):
+            actionType = "UPDATE"
+            selecting = False
+        elif (s == '3'):
+            actionType = "DELETE"
+            selecting = False
+        else:
+            print("Invalid input")
+            print()
+
+    if (actionType == "INSERT"):
+        ID_no = input("Please input the ID number of the art object: ")
+        Year_created = input("Please input the year the art object was created: ")
+        Title = input("Please input the title of the art object: ")
+        Descr = input("Please input the description of the art object: ")
+        Origin = input("Please input the origin of the art object: ")
+        Epoch = input("Please input the epoch of the art object: ")
+        Collection_type = input("Please input the collection type that the object resides in: ")
+        print("What kind of art object are you inserting")
+        
+        selecting = True
+        while selecting:
+            i = input("(1) Painting \t (2) Statue \t (3) Sculpture \t (4) Other: ")
+            if (i == '1'):
+                objType = "Painting"
+                paint_type = input("Please input the paint type: ")
+                Drawn_on = input("Please input the medium the painting is drawn on: ")
+                style = input("Please input the style of the painting: ")
+                selecting = False
+            elif (i == '2'):
+                objType = "Statue"
+                material = input("Please input the material the statue is made out of: ")
+                height = input("Please input the height of the statue: ")
+                weight = input("Please input the weight of the statue: ")
+                style = input("Please input the style of the statue: ")
+                selecting = False
+            elif (i == '3'):
+                objType = "Sculpture"
+                material = input("Please input the material the sculpture is made out of: ")
+                height = input("Please input the height of the sculpture: ")
+                weight = input("Please input the weight of the sculpture: ")
+                style = input("Please input the style of the sculpture: ")
+                selecting = False
+            elif (i == '3'):
+                objType = "Other"
+                other_type = input("Please input the type of this object: ")
+                style = input("Please input this objects style: ")
+                selecting = False
+            else:
+                print("Invalid input")
+                print()
+        Artist_name = input("Please input the name of the artist who created the art object: ")
+        #COMPLETE SQL COMMAND CREATION AND EXECUTION
+
+    if (actionType == "UPDATE"):
+        print("What are you updating")
+        selecting = True
+        while selecting:
+            i = input("(1) Art Object \t (2) Painting \t (3) Statue \t (4) Sculpture \t (5) Other: ")
+            #if (i == '1'):
+
+            #elif (i == '2'):
+
+            #elif (i == '3'):
+
+            #elif (i == '4'):
+
+            #elif (i == '5'):
+
+            #else:
+                #print("Invalid input")
+                #print()
+
+
 def editArtists(cursor):
     pass
 def editPermCollection(cursor):
@@ -56,9 +136,17 @@ def editSepCollections(cursor):
 
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 
 def admin_console():
     pass
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 def data_entry_console():
@@ -73,31 +161,31 @@ def data_entry_console():
 
         #Art Objects menu
         while mLevelOneChoice == '1':
-            editArtObj()
+            editArtObj(cur)
             break
         #Artists menu
         while mLevelOneChoice == '2':
-            editArtists()
+            editArtists(cur)
             break
 
         #Permanent Collection menu
         while mLevelOneChoice == '3':
-            editPermCollection()
+            editPermCollection(cur)
             break
 
         #Borrowed Collection menu
         while mLevelOneChoice == '4':
-            editBorrowCollection()
+            editBorrowCollection(cur)
             break
 
         #Exhibitions menu
         while mLevelOneChoice == '5':
-            editExhibitions()
+            editExhibitions(cur)
             break
 
         #Seperate Collections menu
         while mLevelOneChoice == '6':  
-            editSepCollections()
+            editSepCollections(cur)
             break
 
 
@@ -109,7 +197,8 @@ def data_entry_console():
 
 
 
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 def guest_console():
@@ -197,6 +286,10 @@ def guest_console():
             print()
 
 
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
