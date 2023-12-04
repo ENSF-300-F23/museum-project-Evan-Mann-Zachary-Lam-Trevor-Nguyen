@@ -647,7 +647,7 @@ DROP USER IF EXISTS guest @localhost;
 CREATE USER db_admin @localhost IDENTIFIED WITH mysql_native_password BY 'admin';
 CREATE USER db_data_entry @localhost IDENTIFIED WITH mysql_native_password BY 'data';
 CREATE USER guest @localhost;
-GRANT db_admin @localhost TO db_admin @localhost;
+GRANT db_admin_role @localhost TO db_admin @localhost;
 GRANT db_data_entry_role @localhost TO db_data_entry @localhost;
 GRANT db_guest_role @localhost TO guest @localhost;
 SET DEFAULT ROLE ALL TO db_admin @localhost;
