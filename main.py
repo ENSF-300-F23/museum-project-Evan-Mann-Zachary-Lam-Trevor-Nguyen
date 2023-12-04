@@ -227,12 +227,12 @@ if __name__ == "__main__":
     cnx = mysql.connector.connect(
         host="127.0.0.1",
         port=3306,
-        user= "root",               #CHANGE THIS FOR ACTUAL USERNAME INPUT
-        password= "33104001SqL?")   #CHANGE THIS FOR ACTUAL PASSWORD INPUT 
+        user= username,              
+        password= password)   
     ### Get a cursor
     cur = cnx.cursor()
     ### Execute a query
-    #PUT USE COMMAND HERE FOR DATA BASE
+    cur.execute("USE MUSEUM;")
     
     if selection == '1':
         admin_console()
