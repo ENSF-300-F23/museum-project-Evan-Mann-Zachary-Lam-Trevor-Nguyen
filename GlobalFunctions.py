@@ -22,20 +22,20 @@ def printData(header, data, type = 'basic'):
     if type == 'Art Object':
 
         header_size=len(header)
-        print(f"{str(header[0]):<11s}{str(header[1]):<6s}{str(header[2]):<25s}{str(header[3]):<25s}{str(header[4]):<20s}{str(header[5]):<15s}{str(header[6]):<15s}{str(header[7]):<15s}{str(header[8]):<20s}",end='')
+        print(f"{str(header[0]):<11s}{str(header[1]):<13s}{str(header[2]):<40s}{str(header[3]):<40s}{str(header[4]):<15s}{str(header[5]):<15s}{str(header[6]):<17s}{str(header[7]):<15s}{str(header[8]):<30s}",end='')
         print()
-        print(17*header_size*'-')
+        print(200*'-')
         for row in data:
-            print(f"{str(row[0]):<11s}{str(row[1]):<6s}{str(row[2]):<25s}{str(row[3]):<25s}{str(row[4]):<20s}{str(row[5]):<15s}{str(row[6]):<15s}{str(row[7]):<15s}{str(row[8]):<20s}",end='')
+            print(f"{str(row[0]):<11s}{str(row[1]):<13s}{str(row[2]):<40s}{str(row[3]):<40s}{str(row[4]):<15s}{str(row[5]):<15s}{str(row[6]):<17s}{str(row[7]):<15s}{str(row[8]):<30s}",end='')
             print()
     
     else:
         header_size=len(header)
-        for col_name in header_size:
-            print(f"{col_name:>15s}",end='')
+        for col_name in header:
+            print(f"{col_name:<25s}",end='')
         print()
-        print(15*header_size*'-')
+        print(25*header_size*'-')
         for row in data:
             for val in row:
-                print("{:<15s}".format(str(val)),end='')
+                print("{:<25s}".format(str(val)),end='')
             print()

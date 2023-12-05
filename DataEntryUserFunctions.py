@@ -22,10 +22,11 @@ def editArtObj(cur, actionType = None):
     if (actionType == "INSERT"):
 
         cur.execute("select * from art_object;")
-        print(100*'~')
+        print(200*'~')
         print("Art Objects before any changes")
+        print()
         printData(cur.column_names, cur.fetchall(), 'Art Object')
-        print(100*'~')
+        print(200*'~')
 
         selecting = True
         while selecting:
@@ -40,11 +41,11 @@ def editArtObj(cur, actionType = None):
         Year_created = input("Please input the year the art object was created: ")
         while len(Year_created) != 4: Year_created = input("Invalid Input. Year must be 4 digits. Please input a new year: ")
         Title = input("Please input the title of the art object: ")
-        while len(Title) > 25: Title= input("Invalid Input. title must be less than 26 characters. Please input a new title: ")
+        while len(Title) > 40: Title= input("Invalid Input. title must be less than 26 characters. Please input a new title: ")
         Descr = input("Please input the description of the art object: ")
-        while len(Descr) > 25: input("Invalid Input. Description must be less than 26 characters. Please input a new description: ")
+        while len(Descr) > 40: input("Invalid Input. Description must be less than 26 characters. Please input a new description: ")
         Origin = input("Please input the origin of the art object: ")
-        while len(Origin) > 20: input("Invalid Input. Origin must be less than 21 characters. Please input a new origin: ")
+        while len(Origin) > 15: input("Invalid Input. Origin must be less than 21 characters. Please input a new origin: ")
         Epoch = input("Please input the epoch of the art object: ")
         while len(Epoch) > 15: input("Invalid Input. Epoch must be less than 15 characters. Please input a new epoch: ")
 
@@ -86,7 +87,7 @@ def editArtObj(cur, actionType = None):
                 style = input("Please input the style of the sculpture: ")
                 secondary_Command = f"INSERT INTO SCULPTURE VALUES ('{ID_no}','{material}','{height}','{weight}','{style}');"
                 selecting = False
-            elif (i == '3'):
+            elif (i == '4'):
                 objType = "Other"
                 other_type = input("Please input the type of this object: ")
                 style = input("Please input this objects style: ")
@@ -96,16 +97,16 @@ def editArtObj(cur, actionType = None):
                 print("Invalid input")
                 print()
             
-            selecting = True
-            while selecting:
-                Artist_name = input("Please input the name of the artist who created the art object: ")
-                if Artist_name not in getCurArtistNames(cur):
-                    print("\nInvalid Input, Please input an artist name that is already in the database\n")
-                elif len(Artist_name) > 20:
-                    print("\nInvalid Input. Artist name must be less than 20 characters")
-                
-                else:
-                    selecting = False
+        selecting = True
+        while selecting:
+            Artist_name = input("Please input the name of the artist who created the art object: ")
+            if Artist_name not in getCurArtistNames(cur) and Artist_name != 'None':
+                print("\nInvalid Input, Please input an artist name that is already in the database\n")
+            elif len(Artist_name) > 30:
+                print("\nInvalid Input. Artist name must be less than 20 characters")
+            
+            else:
+                selecting = False
 
         art_obj_command = f"INSERT INTO ART_OBJECT VALUES ('{ID_no}','{Year_created}','{Title}','{Descr}','{Origin}','{Epoch}','{Collection_type}','{objType}','{Artist_name}');"
         cur.execute(art_obj_command)
@@ -113,20 +114,22 @@ def editArtObj(cur, actionType = None):
         
 
         cur.execute("select * from art_object;")
-        print(100*'~')
+        print(200*'~')
         print("Art Objects after insert")
+        print()
         printData(cur.column_names, cur.fetchall(), 'Art Object')
-        print(100*'~')
+        print(200*'~')
 
         print()
         showArtTypeChanges = input(f"{objType} has had an insert as well, would you like to see those changes? (Y or N): ")
         while showArtTypeChanges not in ['Y','N']:  showArtTypeChanges = input('Invalid input. (Y or N): ')
         if showArtTypeChanges == 'Y':
             cur.execute(f"select * from {objType};")
-            print(100*'~')
+            print(200*'~')
             print(f"{objType} after insert")
-            printData(cur.column_names, cur.fetchall(), 'Art Object')
-            print(100*'~')
+            print()
+            printData(cur.column_names, cur.fetchall())
+            print(200*'~')
 
 
     if (actionType == "UPDATE"):
