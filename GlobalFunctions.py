@@ -37,10 +37,10 @@ def printData(header, data, type = 'basic'):
     else:
         header_size=len(header)
         for col_name in header:
-            print(f"{col_name:<25s}",end='')
+            print(f"{col_name:<30s}",end='')
         print()
         print(25*header_size*'-')
         for row in data:
             for val in row:
-                print("{:<25s}".format(str(val)),end='')
+                print("{:<30s}".format(str(val)),end='')
             print()

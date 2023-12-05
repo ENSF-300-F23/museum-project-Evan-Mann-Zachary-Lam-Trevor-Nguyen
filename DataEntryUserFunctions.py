@@ -6,6 +6,7 @@ from AdminUserFunctions import *
 
 #Data entry user input/delete functions
 def editArtObj(cur, actionType = None):
+    #Asking the user what kind of action they would like to do on the art object tables
     print("What kind of action would you like to do")
     while actionType == None:
         s = input("(1) Insert \t (2) Update \t (3) Delete: ")
@@ -18,9 +19,11 @@ def editArtObj(cur, actionType = None):
         else:
             print("Invalid input")
             print()
-
+    
+    #if that action was insert the following code block runs
     if (actionType == "INSERT"):
 
+        #display the current state of the art_object table before changes
         cur.execute("select * from art_object;")
         print(200*'~')
         print("Art Objects before any changes")
@@ -28,6 +31,7 @@ def editArtObj(cur, actionType = None):
         printData(cur.column_names, cur.fetchall(), 'Art Object')
         print(200*'~')
 
+        #Getting the ID of the object and checking that it doesn't already exist in the database
         selecting = True
         while selecting:
             ID_no = input("Please input the ID number of the art object: ")
@@ -38,106 +42,148 @@ def editArtObj(cur, actionType = None):
             else:
                 selecting = False
 
+        #Input the year and check its length (All lengths are checked in art obejct due to printing constraints since there are so many columns)
         Year_created = input("Please input the year the art object was created: ")
         while len(Year_created) != 4: Year_created = input("Invalid Input. Year must be 4 digits. Please input a new year: ")
+        
+        #Input the title and check its length
         Title = input("Please input the title of the art object: ")
         while len(Title) > 40: Title= input("Invalid Input. title must be less than 26 characters. Please input a new title: ")
+        
+        #Input the description and check its length
         Descr = input("Please input the description of the art object: ")
         while len(Descr) > 40: input("Invalid Input. Description must be less than 26 characters. Please input a new description: ")
+        
+        #Input the origin and check its length
         Origin = input("Please input the origin of the art object: ")
         while len(Origin) > 15: input("Invalid Input. Origin must be less than 21 characters. Please input a new origin: ")
+        
+        #Input the epoch and check its length
         Epoch = input("Please input the epoch of the art object: ")
         while len(Epoch) > 15: input("Invalid Input. Epoch must be less than 15 characters. Please input a new epoch: ")
 
+        #Input the collection and make sure it is either permanent or borrowed
         selecting = True
         while selecting:
             Collection_type = input("Please input the collection type that the object resides in (borrowed or permanent): ")
-            if ID_no in ['borrowed', 'permanent']:
+            if Collection_type not in ['borrowed', 'permanent']:
                 print("\nInvalid Input, Please input choice exactly as shown\n")
             else:
                 selecting = False
         
+        #If the art object belongs to the permanent collection a new entry within that table must be created with a foreign key
+        #pointing back to the Art object must be created. This code block walks the user through that process similarly to
+        #What they had been doing up until this point
         if Collection_type == 'permanent':
-            objStatus = input("Please input the status of the object: ")
-            cost = input('Please input the cost of the object: ')
+            objStatus = input("Please input the status of the object: ")    #Input the status of the object
+            cost = input('Please input the cost of the object: ')           #Input the cost of the object
+
+            #Inputting the date aqquired requires it to follow a very specific format due to SQL's constraints on how a DATE type
+            #Is formatted so these checks make sure that the correct form is followed
             dateAqquired = input("Please input the date the object was put into the permanent collection (XXXX-XX-XX [year - month - day]): ")
             selecting = True
             while selecting:
-                if dateAqquired.replace('-', '').isnumeric() and dateAqquired[5] == '-' and dateAqquired[8] == '-' and len(dateAqquired) == 10 and int(dateAqquired[2:4]) <= 12 and int(dateAqquired[8:]) <=31:
+                if dateAqquired.replace('-', '').isnumeric() and dateAqquired[4] == '-' and dateAqquired[7] == '-' and len(dateAqquired) == 10 and int(dateAqquired[5:7]) <= 12 and int(dateAqquired[8:]) <=31:
                     selecting = False
                 else:
                     dateAqquired = input("Invalid date, please re enter the date the piece was aqquired: ")
+            #Creation of the command for inserting a new permanent collection value, using the values just inputted
             ternaryCommand = f"INSERT INTO PERMANENT_COLLECTION VALUES ('{ID_no}','{objStatus}','{cost}','{dateAqquired}');"
 
-
+        #Same code as permanent collection but for the borrowed collections, it involes inputting the collectio ID as well which is checked for duplicates
         if Collection_type == 'borrowed':
             
             selecting = True
             while selecting:
+                #Input the collection ID
                 collectionBorrowedFrom = input("Please input the collection the piece was borrowed from: ")
-
                 if collectionBorrowedFrom not in getCurCollectionIDs(cur) and Artist_name != 'None':
                     print("\nInvalid Input, Please input a collection ID that is already in the database\n")
-                
                 else:
                     selecting = False
-
+            #Input the date it was borrowed
             dateBorrowed = input("Please input the date the object was borrowed on (XXXX-XX-XX [year - month - day]): ")
-            dateReturned = input('Please input the date the object was returned on (XXXX-XX-XX [year - month - day]): ')
             selecting = True
             while selecting:
-                if dateBorrowed.replace('-', '').isnumeric() and dateBorrowed[5] == '-' and dateBorrowed[8] == '-' and len(dateBorrowed) == 10 and int(dateBorrowed[2:4]) <= 12 and int(dateBorrowed[8:]) <=31:
+
+                if dateBorrowed.replace('-', '').isnumeric() and dateBorrowed[4] == '-' and dateBorrowed[7] == '-' and len(dateBorrowed) == 10 and int(dateBorrowed[5:7]) <= 12 and int(dateBorrowed[8:]) <=31:
                     selecting = False
                 else:
                     dateBorrowed = input("Invalid date, please re enter the date the piece was borrowed: ")            
 
-
+            #Input the date it was returned 
+            dateReturned = input('Please input the date the object was returned on or null if it hasn\'t been (XXXX-XX-XX [year - month - day]): ')
             selecting = True
+            if dateReturned == 'null':
+                selecting = False
             while selecting:
-                if dateReturned.replace('-', '').isnumeric() and dateReturned[5] == '-' and dateReturned[8] == '-' and len(dateReturned) == 10 and int(dateReturned[2:4]) <= 12 and int(dateReturned[8:]) <=31:
+                if dateReturned.replace('-', '').isnumeric() and dateReturned[4] == '-' and dateReturned[7] == '-' and len(dateReturned) == 10 and int(dateReturned[5:7]) <= 12 and int(dateReturned[8:]) <=31:
                     selecting = False
                 else:
                     dateReturned = input("Invalid date, please re enter the date the piece was returned: ")
-            ternaryCommand = f"INSERT INTO BORROWED VALUES ('{ID_no}','{objStatus}','{cost}','{dateAqquired}');"
+            
+            #Considering the special case when date borrowed is null since in SQL it can't have quotations around it
+            if dateReturned != 'null':
+                ternaryCommand = f"INSERT INTO BORROWED VALUES ('{ID_no}','{collectionBorrowedFrom}','{dateBorrowed}','{dateReturned}');"
+            else:
+                ternaryCommand = f"INSERT INTO BORROWED VALUES ('{ID_no}','{collectionBorrowedFrom}','{dateBorrowed}', null);"
         
+        #Inputting the type of art object that has been inserted to go through the creation process of insertting a tuple into
+        #That specific table as well.
         print("What kind of art object are you inserting")
-        
         selecting = True
         while selecting:
             i = input("(1) Painting \t (2) Statue \t (3) Sculpture \t (4) Other: ")
             if (i == '1'):
+
+                #Inputs for a painting object
                 objType = "Painting"
                 paint_type = input("Please input the paint type: ")
                 Drawn_on = input("Please input the medium the painting is drawn on: ")
                 style = input("Please input the style of the painting: ")
+
+                #Insert command creation for the object type
                 secondary_Command = f"INSERT INTO PAINTING VALUES ('{ID_no}','{paint_type}','{Drawn_on}','{style}');"
                 selecting = False
             elif (i == '2'):
+
+                #Inputs for a statue object
                 objType = "Statue"
                 material = input("Please input the material the statue is made out of: ")
                 height = input("Please input the height of the statue: ")
                 weight = input("Please input the weight of the statue: ")
                 style = input("Please input the style of the statue: ")
+
+                #Insert command creation for the object type
                 secondary_Command = f"INSERT INTO STATUE VALUES ('{ID_no}','{material}','{height}','{weight}','{style}');"
                 selecting = False
             elif (i == '3'):
+
+                #Inputs for a sculpture object
                 objType = "Sculpture"
                 material = input("Please input the material the sculpture is made out of: ")
                 height = input("Please input the height of the sculpture: ")
                 weight = input("Please input the weight of the sculpture: ")
                 style = input("Please input the style of the sculpture: ")
+
+                #Insert command creation for the object type
                 secondary_Command = f"INSERT INTO SCULPTURE VALUES ('{ID_no}','{material}','{height}','{weight}','{style}');"
                 selecting = False
             elif (i == '4'):
+
+                #Inputs for other
                 objType = "Other"
                 other_type = input("Please input the type of this object: ")
                 style = input("Please input this objects style: ")
+
+                #Insert command creation for the object type
                 secondary_Command = f"INSERT INTO OTHER VALUES ('{ID_no}','{other_type}','{style}');"
                 selecting = False
             else:
                 print("Invalid input")
                 print()
             
+        #Inputting the artist name and making sure it doesn't violate referential integrity nor be too long
         selecting = True
         while selecting:
             Artist_name = input("Please input the name of the artist who created the art object: ")
@@ -149,11 +195,15 @@ def editArtObj(cur, actionType = None):
             else:
                 selecting = False
 
+        #Insert command for art object creation
         art_obj_command = f"INSERT INTO ART_OBJECT VALUES ('{ID_no}','{Year_created}','{Title}','{Descr}','{Origin}','{Epoch}','{Collection_type}','{objType}','{Artist_name}');"
+        
+        #Execution of the three insert commands
         cur.execute(art_obj_command)
         cur.execute(secondary_Command)
-        
+        cur.execute(ternaryCommand)
 
+        #Displaying the updated table for art object 
         cur.execute("select * from art_object;")
         print(200*'~')
         print("Art Objects after insert")
@@ -162,6 +212,8 @@ def editArtObj(cur, actionType = None):
         print(200*'~')
 
         print()
+
+        #Prompting the user on if they want to see the changes to the specific object type table they added to as well
         showArtTypeChanges = input(f"{objType} has had an insert as well, would you like to see those changes? (Y or N): ")
         while showArtTypeChanges not in ['Y','N']:  showArtTypeChanges = input('Invalid input. (Y or N): ')
         if showArtTypeChanges == 'Y':
@@ -172,7 +224,23 @@ def editArtObj(cur, actionType = None):
             printData(cur.column_names, cur.fetchall())
             print(200*'~')
 
+            print()
 
+        #Prompting the user if they want to see the changes to the specific collection type table they added to as wel
+        showCollectionTypeChanges = input(f"{Collection_type} collection has had an insert as well, would you like to see those changes? (Y or N): ")
+        while showCollectionTypeChanges not in ['Y','N']:  showCollectionTypeChanges = input('Invalid input. (Y or N): ')
+        if showArtTypeChanges == 'Y':
+
+            c = 'PERMANENT_COLLECTION' if Collection_type == 'permanent' else 'BORROWED'
+
+            cur.execute(f"select * from {c};")
+            print(200*'~')
+            print(f"{c} after insert")
+            print()
+            printData(cur.column_names, cur.fetchall())
+            print(200*'~')
+
+            print()
 
 
 
