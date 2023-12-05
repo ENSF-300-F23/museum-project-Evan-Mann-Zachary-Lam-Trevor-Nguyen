@@ -111,9 +111,22 @@ def editArtObj(cur, actionType = None):
         cur.execute(art_obj_command)
         cur.execute(secondary_Command)
         
-        
-        test = cur.fetchall()
+
+        cur.execute("select * from art_object;")
+        print(100*'~')
+        print("Art Objects after insert")
+        printData(cur.column_names, cur.fetchall(), 'Art Object')
+        print(100*'~')
+
         print()
+        showArtTypeChanges = input(f"{objType} has had an insert as well, would you like to see those changes? (Y or N): ")
+        while showArtTypeChanges not in ['Y','N']:  showArtTypeChanges = input('Invalid input. (Y or N): ')
+        if showArtTypeChanges == 'Y':
+            cur.execute(f"select * from {objType};")
+            print(100*'~')
+            print(f"{objType} after insert")
+            printData(cur.column_names, cur.fetchall(), 'Art Object')
+            print(100*'~')
 
 
     if (actionType == "UPDATE"):
