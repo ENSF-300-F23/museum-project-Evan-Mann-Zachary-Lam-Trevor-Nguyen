@@ -17,6 +17,11 @@ def getCurExIDs(cur):
     searchResult = cur.fetchall()
     return [str(x[0]) for x in searchResult]
 
+def getCurCollectionIDs(cur):
+    cur.execute("select C_name from collection;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
 #Print function to print any set of data granted the header and data are provided
 def printData(header, data, type = 'basic'):
     if type == 'Art Object':
