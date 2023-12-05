@@ -2,6 +2,9 @@
 # Museum-Project
 ## To Do list:
 - modify this file to include your group members information and tasks assigned per each
+Zachary Lam (B02): EERD, database creation
+Evan Mann (B02): Relational schema, admin interface, data entry interface
+Trevor Nguyen (B02): Query code, browsing interface
 - modify this file to include any notes on how to use and run the program
 - include any features you have added beyond the minimum requirements in a features list
 
