@@ -70,17 +70,35 @@ def editArtObj(cur, actionType = None):
             ternaryCommand = f"INSERT INTO PERMANENT_COLLECTION VALUES ('{ID_no}','{objStatus}','{cost}','{dateAqquired}');"
 
 
-            if Collection_type == 'borrowed':
-                objStatus = input("Please input the status of the object: ")
-                cost = input('Please input the cost of the object: ')
-                dateAqquired = input("Please input the date the object was put into the permanent collection (XXXX-XX-XX [year - month - day]): ")
-                selecting = True
-                while selecting:
-                    if dateAqquired.replace('-', '').isnumeric() and dateAqquired[5] == '-' and dateAqquired[8] == '-' and len(dateAqquired) == 10 and int(dateAqquired[2:4]) <= 12 and int(dateAqquired[8:]) <=31:
-                        selecting = False
-                    else:
-                        dateAqquired = input("Invalid date, please re enter the date the piece was aqquired: ")
-                ternaryCommand = f"INSERT INTO PERMANENT_COLLECTION VALUES ('{ID_no}','{objStatus}','{cost}','{dateAqquired}');"
+        if Collection_type == 'borrowed':
+            
+            selecting = True
+            while selecting:
+                collectionBorrowedFrom = input("Please input the collection the piece was borrowed from: ")
+
+                if collectionBorrowedFrom not in getCurCollectionIDs(cur) and Artist_name != 'None':
+                    print("\nInvalid Input, Please input a collection ID that is already in the database\n")
+                
+                else:
+                    selecting = False
+
+            dateBorrowed = input("Please input the date the object was borrowed on (XXXX-XX-XX [year - month - day]): ")
+            dateReturned = input('Please input the date the object was returned on (XXXX-XX-XX [year - month - day]): ')
+            selecting = True
+            while selecting:
+                if dateBorrowed.replace('-', '').isnumeric() and dateBorrowed[5] == '-' and dateBorrowed[8] == '-' and len(dateBorrowed) == 10 and int(dateBorrowed[2:4]) <= 12 and int(dateBorrowed[8:]) <=31:
+                    selecting = False
+                else:
+                    dateBorrowed = input("Invalid date, please re enter the date the piece was borrowed: ")            
+
+
+            selecting = True
+            while selecting:
+                if dateReturned.replace('-', '').isnumeric() and dateReturned[5] == '-' and dateReturned[8] == '-' and len(dateReturned) == 10 and int(dateReturned[2:4]) <= 12 and int(dateReturned[8:]) <=31:
+                    selecting = False
+                else:
+                    dateReturned = input("Invalid date, please re enter the date the piece was returned: ")
+            ternaryCommand = f"INSERT INTO BORROWED VALUES ('{ID_no}','{objStatus}','{cost}','{dateAqquired}');"
         
         print("What kind of art object are you inserting")
         
