@@ -56,8 +56,31 @@ def editArtObj(cur, actionType = None):
                 print("\nInvalid Input, Please input choice exactly as shown\n")
             else:
                 selecting = False
+        
+        if Collection_type == 'permanent':
+            objStatus = input("Please input the status of the object: ")
+            cost = input('Please input the cost of the object: ')
+            dateAqquired = input("Please input the date the object was put into the permanent collection (XXXX-XX-XX [year - month - day]): ")
+            selecting = True
+            while selecting:
+                if dateAqquired.replace('-', '').isnumeric() and dateAqquired[5] == '-' and dateAqquired[8] == '-' and len(dateAqquired) == 10 and int(dateAqquired[2:4]) <= 12 and int(dateAqquired[8:]) <=31:
+                    selecting = False
+                else:
+                    dateAqquired = input("Invalid date, please re enter the date the piece was aqquired: ")
+            ternaryCommand = f"INSERT INTO PERMANENT_COLLECTION VALUES ('{ID_no}','{objStatus}','{cost}','{dateAqquired}');"
 
 
+            if Collection_type == 'borrowed':
+                objStatus = input("Please input the status of the object: ")
+                cost = input('Please input the cost of the object: ')
+                dateAqquired = input("Please input the date the object was put into the permanent collection (XXXX-XX-XX [year - month - day]): ")
+                selecting = True
+                while selecting:
+                    if dateAqquired.replace('-', '').isnumeric() and dateAqquired[5] == '-' and dateAqquired[8] == '-' and len(dateAqquired) == 10 and int(dateAqquired[2:4]) <= 12 and int(dateAqquired[8:]) <=31:
+                        selecting = False
+                    else:
+                        dateAqquired = input("Invalid date, please re enter the date the piece was aqquired: ")
+                ternaryCommand = f"INSERT INTO PERMANENT_COLLECTION VALUES ('{ID_no}','{objStatus}','{cost}','{dateAqquired}');"
         
         print("What kind of art object are you inserting")
         
@@ -130,6 +153,9 @@ def editArtObj(cur, actionType = None):
             print()
             printData(cur.column_names, cur.fetchall())
             print(200*'~')
+
+
+
 
 
     if (actionType == "UPDATE"):
