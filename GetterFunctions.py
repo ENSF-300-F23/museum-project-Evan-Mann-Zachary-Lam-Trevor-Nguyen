@@ -1,5 +1,6 @@
 import mysql.connector
 
+
 #Global Functions
 def getCurArtistNames(cur):
     cur.execute("select artist_name from artist;")

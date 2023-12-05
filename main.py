@@ -39,15 +39,12 @@ if __name__ == "__main__":
     ### Execute a query
     cur.execute("USE MUSEUM;")
 
-    test = getCurExIDs(cur)
-    if 'TU550' in test:
-        print("test")
 
     if selection == '1':
-        admin_console()
+        admin_console(cur)
     elif selection == '2':
-        data_entry_console()
+        data_entry_console(cur)
     else:
-        guest_console()
+        guest_console(cur)
 
     print("Thanks for using the program")

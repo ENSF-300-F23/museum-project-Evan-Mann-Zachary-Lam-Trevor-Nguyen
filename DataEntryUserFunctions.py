@@ -1,4 +1,7 @@
 import mysql.connector
+from GetterFunctions import *
+from GuestUserFunctions import *
+from AdminUserFunctions import *
 
 
 #Data entry user input/delete functions
@@ -34,7 +37,7 @@ def editArtObj(cur, actionType = None):
                 paint_type = input("Please input the paint type: ")
                 Drawn_on = input("Please input the medium the painting is drawn on: ")
                 style = input("Please input the style of the painting: ")
-                secondary_Command = f"INSERT INTO PAINTING VALUES ({ID_no},{paint_type},{Drawn_on},{style});"
+                secondary_Command = f"INSERT INTO PAINTING VALUES ('{ID_no}','{paint_type}','{Drawn_on}','{style}');"
                 selecting = False
             elif (i == '2'):
                 objType = "Statue"
@@ -42,7 +45,7 @@ def editArtObj(cur, actionType = None):
                 height = input("Please input the height of the statue: ")
                 weight = input("Please input the weight of the statue: ")
                 style = input("Please input the style of the statue: ")
-                secondary_Command = f"INSERT INTO STATUE VALUES ({ID_no},{material},{height},{weight},{style});"
+                secondary_Command = f"INSERT INTO STATUE VALUES ('{ID_no}','{material}','{height}','{weight}','{style}');"
                 selecting = False
             elif (i == '3'):
                 objType = "Sculpture"
@@ -50,22 +53,34 @@ def editArtObj(cur, actionType = None):
                 height = input("Please input the height of the sculpture: ")
                 weight = input("Please input the weight of the sculpture: ")
                 style = input("Please input the style of the sculpture: ")
-                secondary_Command = f"INSERT INTO SCULPTURE VALUES ({ID_no},{material},{height},{weight},{style});"
+                secondary_Command = f"INSERT INTO SCULPTURE VALUES ('{ID_no}','{material}','{height}','{weight}','{style}');"
                 selecting = False
             elif (i == '3'):
                 objType = "Other"
                 other_type = input("Please input the type of this object: ")
                 style = input("Please input this objects style: ")
-                secondary_Command = f"INSERT INTO OTHER VALUES ({ID_no},{other_type},{style});"
+                secondary_Command = f"INSERT INTO OTHER VALUES ('{ID_no}','{other_type}','{style}');"
                 selecting = False
             else:
                 print("Invalid input")
                 print()
-        Artist_name = input("Please input the name of the artist who created the art object: ")
-        art_obj_command = f"INSERT INTO ART_OBJECT VALUES ({ID_no},{Year_created},{Title},{Descr},{Origin},{Epoch},{Collection_type},{objType},{Artist_name});"
+            
+            selecting = True
+            while selecting:
+                Artist_name = input("Please input the name of the artist who created the art object: ")
+                if Artist_name not in getCurArtistNames(cur):
+                    print("\nInvalid Input, Please input an artist name that is already in the database\n")
+                else:
+                    selecting = False
+
+        art_obj_command = f"INSERT INTO ART_OBJECT VALUES ('{ID_no}','{Year_created}','{Title}','{Descr}','{Origin}','{Epoch}','{Collection_type}','{objType}','{Artist_name}');"
         cur.execute(art_obj_command)
         cur.execute(secondary_Command)
         
+        cur.execute("select * from art_object;")
+        test = cur.fetchall()
+        print()
+
 
     if (actionType == "UPDATE"):
         print("What are you updating")
@@ -216,6 +231,6 @@ def data_entry_console(cur):
 
         if mLevelOneChoice == '0':
             break
-        else:
+        elif mLevelOneChoice not in ['0','1','2','3','4','5','6']:
             print("Invalid Option")
             print()
