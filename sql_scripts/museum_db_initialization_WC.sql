@@ -126,7 +126,7 @@ CREATE TABLE BORROWED
 
             
 INSERT INTO ARTIST 
-VALUES 		('Juan Fernández', '1580-02-06', '1630-10-12', 'Spanish', 'Renaissance', 'Baroque', 'Spanish still-life painter.'),
+VALUES 		('Juan Fernandez', '1580-02-06', '1630-10-12', 'Spanish', 'Renaissance', 'Baroque', 'Spanish still-life painter.'),
 			('Pablo Picasso', '1881-10-25', '1973-04-08', 'Spanish', 'Modern', 'Cubism', 'Renowned painter, sculptor, and co-founder of Cubism.'),
 			('Cornelius Norbertus Gijsbrechts', '1630-03-27', '1683-07-06', 'Flemish', 'Baroque', 'Trompe l''oeil', 'Known for trompe l''oeil paintings.'),
 			('Juan Gris', '1887-03-23', '1927-05-11', 'Spain', 'Modern', 'Cubism', 'Juan Gris was a Spanish painter and sculptor born in Madrid.'),
@@ -136,7 +136,7 @@ VALUES 		('Juan Fernández', '1580-02-06', '1630-10-12', 'Spanish', 'Renaissance
 			('Simone Leigh', '1967-01-01', null, 'American', 'Modern', 'Contemporary art', 'Sculptor and contemporary artist.'),
 			('Theaster Gates', '1973-08-28', null, 'American', 'Modern', 'Conceptual art', 'Multidisciplinary artist.'),
 			('Robert Pruitt', null, null, 'American', 'Modern', 'Contemporary art', 'Known for African American portraiture and mixed-media art.'),
-			('Jakob Orfèvre Blanck', null, null, 'French', 'Renaissance', 'Baroque', 'Cabinetmaker known for crafting decorative furniture.'),
+			('Jakob Orfevre Blanck', null, null, 'French', 'Renaissance', 'Baroque', 'Cabinetmaker known for crafting decorative furniture.'),
 			('Jean-Auguste-Dominique Ingres', '1780-08-29', '1867-01-14', 'French', 'Romanticism', 'Neoclassicism', 'Renowned painter known for "The Great Odalisque".'),
 			('Jacques-Louis David', '1748-08-30', '1825-12-29', 'French', 'Neoclassicism', 'Neoclassical art', 'Famous for "The Sabines" and his neoclassical style.'),
 			('Giovanni Paolo Panini', '1691-06-17', '1765-10-21', 'Italian', 'Baroque', 'Vedutism', 'Painter known for vedute paintings of Rome.'),
