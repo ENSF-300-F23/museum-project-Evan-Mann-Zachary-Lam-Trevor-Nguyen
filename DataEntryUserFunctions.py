@@ -21,24 +21,37 @@ def editArtObj(cur, actionType = None):
 
     if (actionType == "INSERT"):
 
+        cur.execute("select * from art_object;")
+        print(100*'~')
+        print("Art Objects before any changes")
+        printData(cur.column_names, cur.fetchall(), 'Art Object')
+        print(100*'~')
+
         selecting = True
         while selecting:
             ID_no = input("Please input the ID number of the art object: ")
-            if ID_no not in getCurArtIDs(cur):
+            if ID_no in getCurArtIDs(cur):
                 print("\nInvalid Input, Please input a new unique ID that is not already in the database\n")
+            elif len(ID_no) != 9:
+                print("Invalid input. Please input a 9 digit ID number")
             else:
                 selecting = False
 
         Year_created = input("Please input the year the art object was created: ")
+        while len(Year_created) != 4: Year_created = input("Invalid Input. Year must be 4 digits. Please input a new year: ")
         Title = input("Please input the title of the art object: ")
+        while len(Title) > 25: Title= input("Invalid Input. title must be less than 26 characters. Please input a new title: ")
         Descr = input("Please input the description of the art object: ")
+        while len(Descr) > 25: input("Invalid Input. Description must be less than 26 characters. Please input a new description: ")
         Origin = input("Please input the origin of the art object: ")
+        while len(Origin) > 20: input("Invalid Input. Origin must be less than 21 characters. Please input a new origin: ")
         Epoch = input("Please input the epoch of the art object: ")
+        while len(Epoch) > 15: input("Invalid Input. Epoch must be less than 15 characters. Please input a new epoch: ")
 
         selecting = True
         while selecting:
             Collection_type = input("Please input the collection type that the object resides in (borrowed or permanent): ")
-            if ID_no not in ['borrowed', 'permanent']:
+            if ID_no in ['borrowed', 'permanent']:
                 print("\nInvalid Input, Please input choice exactly as shown\n")
             else:
                 selecting = False
@@ -88,6 +101,9 @@ def editArtObj(cur, actionType = None):
                 Artist_name = input("Please input the name of the artist who created the art object: ")
                 if Artist_name not in getCurArtistNames(cur):
                     print("\nInvalid Input, Please input an artist name that is already in the database\n")
+                elif len(Artist_name) > 20:
+                    print("\nInvalid Input. Artist name must be less than 20 characters")
+                
                 else:
                     selecting = False
 
@@ -95,7 +111,7 @@ def editArtObj(cur, actionType = None):
         cur.execute(art_obj_command)
         cur.execute(secondary_Command)
         
-        cur.execute("select * from art_object;")
+        
         test = cur.fetchall()
         print()
 
