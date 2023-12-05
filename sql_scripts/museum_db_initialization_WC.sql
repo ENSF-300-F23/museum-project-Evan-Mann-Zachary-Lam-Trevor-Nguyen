@@ -343,7 +343,7 @@ VALUES (
         'Renaissance',
         'Permanent',
         'Painting',
-        'Juan Fernández'
+        'Juan Fernandez'
     ),
     (
         '208742683',
@@ -409,7 +409,7 @@ VALUES (
         'Renaissance',
         'Borrowed',
         'Other',
-        'Jakob Orfèvre Blanck'
+        'Jakob Orfevre Blanck'
     ),
     (
         '489783717',

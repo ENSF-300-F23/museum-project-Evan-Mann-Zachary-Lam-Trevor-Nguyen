@@ -19,6 +19,6 @@ msg = IOError
 for command in sqlCommands:
     try:
         if command.strip() != '':
-            cur.execute(command + ';')
+            cur.execute(command)
     except (IOError, msg):
         print("Command skipped: ", msg)
