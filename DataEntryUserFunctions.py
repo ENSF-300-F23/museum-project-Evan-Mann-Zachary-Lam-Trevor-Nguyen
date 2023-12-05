@@ -1,5 +1,5 @@
 import mysql.connector
-from GetterFunctions import *
+from GlobalFunctions import *
 from GuestUserFunctions import *
 from AdminUserFunctions import *
 
@@ -20,13 +20,31 @@ def editArtObj(cur, actionType = None):
             print()
 
     if (actionType == "INSERT"):
-        ID_no = input("Please input the ID number of the art object: ")
+
+        selecting = True
+        while selecting:
+            ID_no = input("Please input the ID number of the art object: ")
+            if ID_no not in getCurArtIDs(cur):
+                print("\nInvalid Input, Please input a new unique ID that is not already in the database\n")
+            else:
+                selecting = False
+
         Year_created = input("Please input the year the art object was created: ")
         Title = input("Please input the title of the art object: ")
         Descr = input("Please input the description of the art object: ")
         Origin = input("Please input the origin of the art object: ")
         Epoch = input("Please input the epoch of the art object: ")
-        Collection_type = input("Please input the collection type that the object resides in: ")
+
+        selecting = True
+        while selecting:
+            Collection_type = input("Please input the collection type that the object resides in (borrowed or permanent): ")
+            if ID_no not in ['borrowed', 'permanent']:
+                print("\nInvalid Input, Please input choice exactly as shown\n")
+            else:
+                selecting = False
+
+
+        
         print("What kind of art object are you inserting")
         
         selecting = True

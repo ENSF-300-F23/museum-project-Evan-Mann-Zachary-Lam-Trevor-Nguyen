@@ -16,3 +16,15 @@ def getCurExIDs(cur):
     cur.execute("select EX_ID from Exhibition;")
     searchResult = cur.fetchall()
     return [str(x[0]) for x in searchResult]
+
+#Print function to print any set of data granted the header and data are provided
+def printData(header, data):
+    header_size=len(header)
+    for i in range(header_size):
+        print("{:<15s}".format(data[i]),end='')
+    print()
+    print(15*header_size*'-')
+    for row in data:
+        for val in row:
+            print("{:<15s}".format(str(val)),end='')
+        print()

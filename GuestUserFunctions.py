@@ -1,5 +1,5 @@
 import mysql.connector
-from GetterFunctions import *
+from GlobalFunctions import *
 from DataEntryUserFunctions import *
 from AdminUserFunctions import *
 
