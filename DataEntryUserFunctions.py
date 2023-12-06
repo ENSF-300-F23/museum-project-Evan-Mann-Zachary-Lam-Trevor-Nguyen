@@ -17,6 +17,7 @@ def editArtObj(cur, actionType = None):
         elif (s == '3'):
             actionType = "DELETE"
         else:
+            print()
             print("Invalid input")
             print()
     
@@ -112,9 +113,9 @@ def editArtObj(cur, actionType = None):
                     dateBorrowed = input("Invalid date, please re enter the date the piece was borrowed: ")            
 
             #Input the date it was returned 
-            dateReturned = input('Please input the date the object was returned on or null if it hasn\'t been (XXXX-XX-XX [year - month - day]): ')
+            dateReturned = input('Please input the date the object was returned on or \"None\" if it hasn\'t been (XXXX-XX-XX [year - month - day]): ')
             selecting = True
-            if dateReturned == 'null':
+            if dateReturned == 'None':
                 selecting = False
             while selecting:
                 if dateReturned.replace('-', '').isnumeric() and dateReturned[4] == '-' and dateReturned[7] == '-' and len(dateReturned) == 10 and int(dateReturned[5:7]) <= 12 and int(dateReturned[8:]) <=31:
@@ -123,7 +124,7 @@ def editArtObj(cur, actionType = None):
                     dateReturned = input("Invalid date, please re enter the date the piece was returned: ")
             
             #Considering the special case when date borrowed is null since in SQL it can't have quotations around it
-            if dateReturned != 'null':
+            if dateReturned != 'None':
                 ternaryCommand = f"INSERT INTO BORROWED VALUES ('{ID_no}','{collectionBorrowedFrom}','{dateBorrowed}','{dateReturned}');"
             else:
                 ternaryCommand = f"INSERT INTO BORROWED VALUES ('{ID_no}','{collectionBorrowedFrom}','{dateBorrowed}', null);"
@@ -254,7 +255,6 @@ def editArtObj(cur, actionType = None):
         while selecting:
             i = input("(1) Art Object \t (2) Painting \t (3) Statue \t (4) Sculpture \t (5) Other: ")
 
-            #Updating an art object 
             print()
             print('-----------------------------------------------------------------------------------------------------------')
             print('| at any point when inputting new values leave the space blank to leave the value as what it currently is |')
@@ -552,8 +552,8 @@ def editArtObj(cur, actionType = None):
 
 
 def editArtists(cur, actionType = None):
-    if actionType == None:
-        print("What kind of action would you like to do")
+    #Asking the user what kind of action they would like to do on the art object tables
+    print("What kind of action would you like to do")
     while actionType == None:
         s = input("(1) Insert \t (2) Update \t (3) Delete: ")
         if (s == '1'):
@@ -563,45 +563,254 @@ def editArtists(cur, actionType = None):
         elif (s == '3'):
             actionType = "DELETE"
         else:
+            print()
             print("Invalid input")
-    print(f"Edit artists with {actionType} called")
+            print()
+
+
+    if (actionType == "INSERT"):
+        #display the current state of the art_object table before changes
+        cur.execute("select * from artist;")
+        print(200*'~')
+        print("Artists before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Artist')
+        print(200*'~')
+        print()
+        #Getting the ID of the object and checking that it doesn't already exist in the database
+        selecting = True
+        while selecting:
+            name = input("Please input the name of the artist: ")
+            if name in getCurArtistNames(cur):
+                print("\nInvalid Input, Please input an artist name that is not already in the database\n")
+            elif len(name) > 30:
+                print("Invalid input. Please input a name 30 characters or shorter")
+            else:
+                selecting = False
+
+        date_born = input('Please input the date the artist was born (XXXX-XX-XX [year - month - day]): ')
+        selecting = True
+        if date_born == 'None':
+            selecting = False
+        while selecting:
+            if date_born.replace('-', '').isnumeric() and date_born[4] == '-' and date_born[7] == '-' and len(date_born) == 10 and int(date_born[5:7]) <= 12 and int(date_born[8:]) <=31:
+                selecting = False
+            else:
+                date_born = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
+
+
+        date_died = input('Please input the date the artist died (XXXX-XX-XX [year - month - day]): ')
+        selecting = True
+        if date_died == 'None':
+            selecting = False
+        while selecting:
+            if date_died.replace('-', '').isnumeric() and date_died[4] == '-' and date_died[7] == '-' and len(date_died) == 10 and int(date_died[5:7]) <= 12 and int(date_died[8:]) <=31:
+                selecting = False
+            else:
+                date_died = input("Invalid date, please re enter the date when the artist died (XXXX-XX-XX [year - month - day]): ")
+
+
+        country_of_origin = input('Please input the country the artist originated from: ')
+        epoch = input('Please input the epoch the artist was most present in: ')
+        main_style = input('Please input the main style of the artist: ')
+        descr = input('Please input a description of the artist: ')
+        print()
+        if date_born == 'None' and date_died != 'None':
+            art_obj_command = f"INSERT INTO ARTIST VALUES ('{name}',null,'{date_died}','{country_of_origin}','{epoch}','{main_style}','{descr}');"
+        elif date_born != 'None' and date_died == 'None':
+            art_obj_command = f"INSERT INTO ARTIST VALUES ('{name}','{date_born}',null,'{country_of_origin}','{epoch}','{main_style}','{descr}');"
+        elif date_born == 'None' and date_died == 'None':
+            art_obj_command = f"INSERT INTO ARTIST VALUES ('{name}',null,null,'{country_of_origin}','{epoch}','{main_style}','{descr}');"
+        else:
+            art_obj_command = f"INSERT INTO ARTIST VALUES ('{name}','{date_born}','{date_died}','{country_of_origin}','{epoch}','{main_style}','{descr}');"
+        cur.execute(art_obj_command)
+
+        cur.execute("select * from artist;")
+        print(200*'~')
+        print("Artists after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Artist')
+        print(200*'~')
+        print()
+
+
+    if (actionType == "UPDATE"):
+        tableName = 'Artist'
+
+        #display the current state of the art_object table before changes
+        cur.execute("select * from artist;")
+        print(200*'~')
+        print("Artists before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Artist')
+        print(200*'~')
+        print()
+        #Getting the ID of the object and checking that it doesn't already exist in the database
+        selecting = True
+        while selecting:
+            name = input("Please input the name of the artist whom you'd like to update the information of: ")
+            if name not in getCurArtistNames(cur):
+                print("\nInvalid Input, Please input an artist name that is already in the database\n")
+            elif len(name) > 30:
+                print("Invalid input. Please input a name 30 characters or shorter")
+            else:
+                selecting = False
+
+        print()
+        print('-----------------------------------------------------------------------------------------------------------')
+        print('| at any point when inputting new values leave the space blank to leave the value as what it currently is |')
+        print('-----------------------------------------------------------------------------------------------------------')
+        print()
+
+        uDate_born = input('Please input the new date the artist was born (XXXX-XX-XX [year - month - day]): ')
+        selecting = True
+        if uDate_born == 'None' or uDate_born == '':
+            selecting = False
+        while selecting:
+            if uDate_born.replace('-', '').isnumeric() and uDate_born[4] == '-' and uDate_born[7] == '-' and len(uDate_born) == 10 and int(uDate_born[5:7]) <= 12 and int(uDate_born[8:]) <=31:
+                selecting = False
+            else:
+                uDate_born = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
+
+        if uDate_born == 'None':
+            uDate_born = 'date_born=null,'
+        elif uDate_born != '':
+            uDate_born = 'date_born=\'' + uDate_born + '\','  
+        
+
+        uDate_died = input('Please input the new date the artist died (XXXX-XX-XX [year - month - day]): ')
+        selecting = True
+        if uDate_died == 'None' or uDate_died == '':
+            selecting = False
+        while selecting:
+            if uDate_died.replace('-', '').isnumeric() and uDate_died[4] == '-' and uDate_died[7] == '-' and len(uDate_died) == 10 and int(uDate_died[5:7]) <= 12 and int(uDate_died[8:]) <=31:
+                selecting = False
+            else:
+                uDate_died = input("Invalid date, please re enter the date when the artist died (XXXX-XX-XX [year - month - day]): ")
+
+        if uDate_died == 'None':
+            uDate_died = 'date_died=null,'
+        elif uDate_died != '':
+            uDate_died = 'date_died=\'' + uDate_died + '\','  
+
+
+
+        uCountry_of_origin = input('Please input the new country the artist originated from: ')
+        if uCountry_of_origin != '':
+            uCountry_of_origin = 'country_of_origin=\'' + uCountry_of_origin + '\','  
+
+        uEpoch = input('Please input the new epoch the artist was most present in: ')
+        if uEpoch != '':
+            uEpoch = 'epoch=\'' + uEpoch + '\','          
+
+        uMain_style = input('Please input the new main style of the artist: ')
+        if uMain_style != '':
+            uMain_style = 'main_style=\'' + uMain_style + '\','          
+
+        uDescr = input('Please input a new description of the artist: ')
+        if uDescr != '':
+            uDescr = 'descr=\'' + uDescr + '\','  
+
+        print()
+        setCommand = "SET " + uDate_born + uDate_died + uCountry_of_origin + uEpoch + uMain_style + uDescr
+        if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1] 
+        cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE artist_name = \'" + name + '\';')
+
+        cur.execute("select * from artist;")
+        print(200*'~')
+        print("Artists after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Artist')
+        print(200*'~')
+        print()
+
+
+
+    if (actionType == "DELETE"):
+        #display the current state of the artist table before changes
+        cur.execute("select * from artist;")
+        print(200*'~')
+        print("Artists before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Artist')
+        print(200*'~')
+        print()
+
+        #Getting the name of the artist and checking that it doesn't already exist in the database
+        selecting = True
+        while selecting:
+            name = input("Please input the name of the artist whom you'd like to delete the information of: ")
+            if name not in getCurArtistNames(cur):
+                print("\nInvalid Input, Please input an artist name that is already in the database\n")
+            elif len(name) > 30:
+                print("Invalid input. Please input a name 30 characters or shorter")
+            else:
+                selecting = False
+
+        print()
+        print('Artist deleted')
+        print()
+
+        cur.execute(f"DELETE FROM artist WHERE artist_name = \'" + name + '\'')
+
+        cur.execute("select * from artist;")
+        print(200*'~')
+        print("Artists after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Artist')
+        print(200*'~')
+        print()
+
+
+
+
 
 
 def editPermCollection(cur, actionType = None):
-    if actionType == None:
-        print("What kind of action would you like to do")
+    #Asking the user what kind of action they would like to do on the art object tables
+    print("What kind of action would you like to do")
     while actionType == None:
-        s = input("(1) Insert \t (2) Update \t (3) Delete: ")
+        s = input("(1) Update \t (2) Delete: ")
         if (s == '1'):
-            actionType = "INSERT"
-        elif (s == '2'):
             actionType = "UPDATE"
-        elif (s == '3'):
+        elif (s == '2'):
             actionType = "DELETE"
         else:
+            print()
             print("Invalid input")
             print()
+
+    if (actionType == "UPDATE"):
+        pass
+    if (actionType == "DELETE"):
+        pass
 
 
 def editBorrowCollection(cur, actionType = None):
-    if actionType == None:
-        print("What kind of action would you like to do")
+    #Asking the user what kind of action they would like to do on the art object tables
+    print("What kind of action would you like to do")
+
     while actionType == None:
-        s = input("(1) Insert \t (2) Update \t (3) Delete: ")
+        s = input("(1) Update \t (2) Delete: ")
         if (s == '1'):
-            actionType = "INSERT"
-        elif (s == '2'):
             actionType = "UPDATE"
-        elif (s == '3'):
+        elif (s == '2'):
             actionType = "DELETE"
         else:
+            print()
             print("Invalid input")
             print()
+
+    if (actionType == "UPDATE"):
+        pass
+    if (actionType == "DELETE"):
+        pass
+
 
 
 def editExhibitions(cur, actionType = None):
-    if actionType == None:
-        print("What kind of action would you like to do")
+    #Asking the user what kind of action they would like to do on the art object tables
+    print("What kind of action would you like to do")
     while actionType == None:
         s = input("(1) Insert \t (2) Update \t (3) Delete: ")
         if (s == '1'):
@@ -611,13 +820,22 @@ def editExhibitions(cur, actionType = None):
         elif (s == '3'):
             actionType = "DELETE"
         else:
+            print()
             print("Invalid input")
             print()
+
+
+    if (actionType == "INSERT"):
+        pass
+    if (actionType == "UPDATE"):
+        pass
+    if (actionType == "DELETE"):
+        pass
 
 
 def editSepCollections(cur, actionType = None):
-    if actionType == None:
-        print("What kind of action would you like to do")
+    #Asking the user what kind of action they would like to do on the art object tables
+    print("What kind of action would you like to do")
     while actionType == None:
         s = input("(1) Insert \t (2) Update \t (3) Delete: ")
         if (s == '1'):
@@ -627,9 +845,17 @@ def editSepCollections(cur, actionType = None):
         elif (s == '3'):
             actionType = "DELETE"
         else:
+            print()
             print("Invalid input")
             print()
 
+
+    if (actionType == "INSERT"):
+        pass
+    if (actionType == "UPDATE"):
+        pass
+    if (actionType == "DELETE"):
+        pass
 
 
 

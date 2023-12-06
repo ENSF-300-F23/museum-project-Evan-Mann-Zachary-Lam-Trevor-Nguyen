@@ -54,12 +54,22 @@ def printData(header, data, type = 'basic'):
             print(f"{str(row[0]):<11s}{str(row[1]):<13s}{str(row[2]):<40s}{str(row[3]):<40s}{str(row[4]):<15s}{str(row[5]):<15s}{str(row[6]):<17s}{str(row[7]):<15s}{str(row[8]):<30s}",end='')
             print()
     
+
+    elif type == 'Artist':
+        header_size=len(header)
+        print(f"{str(header[0]):<30s}{str(header[1]):<13s}{str(header[2]):<13s}{str(header[3]):<20s}{str(header[4]):<15s}{str(header[5]):<20s}{str(header[6]):<40s}",end='')
+        print()
+        print(200*'-')
+        for row in data:
+            print(f"{str(row[0]):<30s}{str(row[1]):<13s}{str(row[2]):<13s}{str(row[3]):<20s}{str(row[4]):<15s}{str(row[5]):<20s}{str(row[6]):<40s}",end='')
+            print()
+
     else:
         header_size=len(header)
         for col_name in header:
             print(f"{col_name:<30s}",end='')
         print()
-        print(25*header_size*'-')
+        print(200*'-')
         for row in data:
             for val in row:
                 print("{:<30s}".format(str(val)),end='')

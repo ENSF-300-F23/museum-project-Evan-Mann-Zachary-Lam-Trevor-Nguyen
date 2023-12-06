@@ -122,7 +122,7 @@ VALUES (
         'Renowned painter, sculptor, and co-founder of Cubism.'
     ),
     (
-        'Cornelius Norbertus Gijsbrechts',
+        'Cornelius Norbertus',
         '1630-03-27',
         '1683-07-06',
         'Flemish',
@@ -365,7 +365,7 @@ VALUES (
         'Baroque',
         'Permanent',
         'Painting',
-        'Cornelius Norbertus Gijsbrechts'
+        'Cornelius Norbertus'
     ),
     (
         '375146957',
