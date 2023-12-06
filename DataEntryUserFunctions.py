@@ -48,19 +48,19 @@ def editArtObj(cur, actionType = None):
         
         #Input the title and check its length
         Title = input("Please input the title of the art object: ")
-        while len(Title) > 40: Title= input("Invalid Input. title must be less than 26 characters. Please input a new title: ")
+        while len(Title) > 40: Title= input("Invalid Input. title must be less than 40 characters. Please input a new title: ")
         
         #Input the description and check its length
         Descr = input("Please input the description of the art object: ")
-        while len(Descr) > 40: input("Invalid Input. Description must be less than 26 characters. Please input a new description: ")
+        while len(Descr) > 40: Descr = input("Invalid Input. Description must be less than 40 characters. Please input a new description: ")
         
         #Input the origin and check its length
         Origin = input("Please input the origin of the art object: ")
-        while len(Origin) > 15: input("Invalid Input. Origin must be less than 21 characters. Please input a new origin: ")
+        while len(Origin) > 15: Origin = input("Invalid Input. Origin must be less than 15 characters. Please input a new origin: ")
         
         #Input the epoch and check its length
         Epoch = input("Please input the epoch of the art object: ")
-        while len(Epoch) > 15: input("Invalid Input. Epoch must be less than 15 characters. Please input a new epoch: ")
+        while len(Epoch) > 15: Epoch = input("Invalid Input. Epoch must be less than 15 characters. Please input a new epoch: ")
 
         #Input the collection and make sure it is either permanent or borrowed
         selecting = True
@@ -186,18 +186,22 @@ def editArtObj(cur, actionType = None):
         #Inputting the artist name and making sure it doesn't violate referential integrity nor be too long
         selecting = True
         while selecting:
-            Artist_name = input("Please input the name of the artist who created the art object: ")
-            if Artist_name not in getCurArtistNames(cur) and Artist_name != 'None':
+            Artist_name = input("Please input the name of the artist who created the art object (input null if unknown): ")
+            if Artist_name not in getCurArtistNames(cur) and Artist_name != 'null':
                 print("\nInvalid Input, Please input an artist name that is already in the database\n")
             elif len(Artist_name) > 30:
-                print("\nInvalid Input. Artist name must be less than 20 characters")
+                print("\nInvalid Input. Artist name must be less than 30 characters")
             
             else:
                 selecting = False
 
         #Insert command for art object creation
-        art_obj_command = f"INSERT INTO ART_OBJECT VALUES ('{ID_no}','{Year_created}','{Title}','{Descr}','{Origin}','{Epoch}','{Collection_type}','{objType}','{Artist_name}');"
+        if (Artist_name != 'null'):
+            art_obj_command = f"INSERT INTO ART_OBJECT VALUES ('{ID_no}','{Year_created}','{Title}','{Descr}','{Origin}','{Epoch}','{Collection_type}','{objType}','{Artist_name}');"
+        else:
+            art_obj_command = f"INSERT INTO ART_OBJECT VALUES ('{ID_no}','{Year_created}','{Title}','{Descr}','{Origin}','{Epoch}','{Collection_type}','{objType}',{Artist_name});"
         
+
         #Execution of the three insert commands
         cur.execute(art_obj_command)
         cur.execute(secondary_Command)
@@ -244,26 +248,282 @@ def editArtObj(cur, actionType = None):
 
 
 
+
+
+
+
+
+
     if (actionType == "UPDATE"):
-        print("What are you updating")
+        #Check if their updating a specific art object or if its a subclass of one
+        print()
+        print("What type of art object are you updating")
         selecting = True
         while selecting:
             i = input("(1) Art Object \t (2) Painting \t (3) Statue \t (4) Sculpture \t (5) Other: ")
+
+            #Updating an art object 
+            print()
+            print('-----------------------------------------------------------------------------------------------------------')
+            print('| at any point when inputting new values leave the space blank to leave the value as what it currently is |')
+            print('-----------------------------------------------------------------------------------------------------------')
+            print()
+            #Art object update
             if (i == '1'):
-                test = input("Do you want to edit the artist? Y or N")
-                if (test == 'Y'):
-                    editArtists(cur, "UPDATE")
-            #elif (i == '2'):
+                tableName = 'art_object'
 
-            #elif (i == '3'):
+                
+                cur.execute(f"select * from {tableName};")
+                print(200*'~')
+                print(f"{tableName} before any changes")
+                print()
+                printData(cur.column_names, cur.fetchall())
+                print(200*'~')
+                print()
+                #Getting the ID of the object and checking that it alreadys exist in the database
+                selecting = True
+                while selecting:
+                    ID_no = input("Please input the ID number of the art object: ")
+                    if ID_no not in getCurArtIDs(cur):
+                        print("\nInvalid Input, Please input an ID of an art object that is already in the database\n")
+                    else:
+                        selecting = False
 
-            #elif (i == '4'):
+                #Inputting a new year
+                uYear = input("Please input the year the art object was created: ")
+                while len(uYear) != 4 and uYear != '': uYear = input("Invalid Input. Year must be 4 digits. Please input a new year: ")
+                if uYear != '':
+                    uYear = 'Year=\'' + uYear + '\','
 
-            #elif (i == '5'):
 
-            #else:
-                #print("Invalid input")
-                #print()
+                #Input the title and check its length
+                uTitle = input("Please input the title of the art object: ")
+                while len(uTitle) > 40: uTitle= input("Invalid Input. title must be less than 40 characters. Please input a new title: ")
+                if uTitle != '':
+                    uTitle = 'Title=\'' + uTitle + '\','
+
+                #Input the description and check its length
+                uDescr = input("Please input the description of the art object: ")
+                while len(uDescr) > 40: uDescr =input("Invalid Input. Description must be less than 40 characters. Please input a new description: ")
+                if uDescr != '':
+                    uDescr = 'Descr=\'' + uDescr + '\','
+                
+                #Input the origin and check its length
+                uOrigin = input("Please input the origin of the art object: ")
+                while len(uOrigin) > 15: uOrigin =input("Invalid Input. Origin must be less than 15 characters. Please input a new origin: ")
+                if uOrigin != '':
+                    uOrigin = 'Origin=\'' + uOrigin + '\','
+
+                #Input the epoch and check its length
+                uEpoch = input("Please input the epoch of the art object: ")
+                while len(uEpoch) > 15: uEpoch =input("Invalid Input. Epoch must be less than 15 characters. Please input a new epoch: ")
+                if uEpoch != '':
+                    uEpoch = 'Epoch=\'' + uEpoch + '\','
+
+
+                selecting = True
+                while selecting:
+                    uCollection_type = input("Please input the collection type that the object resides in (borrowed or permanent): ")
+                    if uCollection_type not in ['borrowed', 'permanent', '']:
+                        print("\nInvalid Input, Please input choice exactly as shown\n")
+                    else:
+                        selecting = False
+                if uCollection_type !='':
+                    uCollection_type = 'Collection_type=\'' + uCollection_type + '\','
+
+                selecting = True
+                while selecting:
+                    uArtist_name = input("Please input the new artist name: ")
+                    if uArtist_name not in getCurArtistNames(cur) and uArtist_name != 'null' and uArtist_name != '':
+                        print("\nInvalid Input, Please input an artist name that is already in the database\n")
+                    elif len(uArtist_name) > 30:
+                        print("\nInvalid Input. Artist name must be less than 30 characters")
+                    else:
+                        selecting = False
+
+                if uArtist_name !='':
+                    uArtist_name = 'Artist_name=\'' + uArtist_name + '\','
+
+                setCommand = "SET " + uYear + uTitle + uDescr + uOrigin + uEpoch + uCollection_type + uArtist_name
+                if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]
+                selecting = False
+
+            #Painting update
+            elif (i == '2'):
+                tableName = 'painting'
+
+                cur.execute(f"select * from {tableName};")
+                print(200*'~')
+                print(f"{tableName} before any changes")
+                print()
+                printData(cur.column_names, cur.fetchall())
+                print(200*'~')
+                print()
+                #Getting the ID of the object and checking that it alreadys exist in the database
+                selecting = True
+                while selecting:
+                    ID_no = input("Please input the ID number of the painting: ")
+                    if ID_no not in getCurPaintingIDs(cur):
+                        print("\nInvalid Input, Please input an ID of a painting that is already in the database\n")
+                    else:
+                        selecting = False
+
+
+                uPaint_type = input("Please input the new paint type: ")
+                if uPaint_type != '':
+                    uPaint_type = 'Paint_type=\'' + uPaint_type + '\','
+
+                uDrawn_on = input("Please input the new medium the painting is drawn on: ")
+                if uDrawn_on != '':
+                    uDrawn_on = 'Drawn_on=\'' + uDrawn_on + '\','
+
+                uStyle = input("Please input the new style of the painting: ")
+                if uStyle != '':
+                    uStyle = 'Style=\'' + uStyle + '\','       
+
+                setCommand = "SET " + uPaint_type + uDrawn_on + uStyle
+                if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]  
+                selecting = False   
+
+            #Statue update
+            elif (i == '3'):
+                tableName = 'statue'
+
+
+                cur.execute(f"select * from {tableName};")
+                print(200*'~')
+                print(f"{tableName} before any changes")
+                print()
+                printData(cur.column_names, cur.fetchall())
+                print(200*'~')
+                print()
+                #Getting the ID of the object and checking that it alreadys exist in the database
+                selecting = True
+                while selecting:
+                    ID_no = input("Please input the ID number of the statue: ")
+                    if ID_no not in getCurStatueIDs(cur):
+                        print("\nInvalid Input, Please input an ID of a statue that is already in the database\n")
+                    else:
+                        selecting = False
+
+
+
+                uMaterial = input("Please input the new material the statue is made out of: ")
+                if uMaterial != '':
+                    uMaterial = 'material=\'' + uMaterial + '\','
+
+                uHeight = input("Please input the new height of the statue: ")
+                if uHeight != '':
+                    uHeight = 'height_cm=\'' + uHeight + '\','
+
+                uWeight = input("Please input the new weight of the statue: ")
+                if uWeight != '':
+                    uWeight = 'weight_kg=\'' + uWeight + '\','
+
+                uStyle = input("Please input the new style of the statue: ")
+                if uStyle != '':
+                    uStyle = 'Style=\'' + uStyle + '\','  
+
+                setCommand = "SET " + uMaterial + uHeight + uWeight + uStyle
+                if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]   
+                selecting = False
+
+            #Sculpture Update
+            elif (i == '4'):
+                tableName = 'sculpture'
+
+                cur.execute(f"select * from {tableName};")
+                print(200*'~')
+                print(f"{tableName} before any changes")
+                print()
+                printData(cur.column_names, cur.fetchall())
+                print(200*'~')
+                print()
+
+                #Getting the ID of the object and checking that it alreadys exist in the database
+                selecting = True
+                while selecting:
+                    ID_no = input("Please input the ID number of the sculpture: ")
+                    if ID_no not in getCurSculptureIDs(cur):
+                        print("\nInvalid Input, Please input an ID of a sculpture that is already in the database\n")
+                    else:
+                        selecting = False
+
+
+                uMaterial = input("Please input the new material the sculpture is made out of: ")
+                if uMaterial != '':
+                    uMaterial = 'material=\'' + uMaterial + '\','
+
+                uHeight = input("Please input the new height of the sculpture: ")
+                if uHeight != '':
+                    uDruHeightawn_on = 'height_cm=\'' + uHeight + '\','
+
+                uWeight = input("Please input the new weight of the sculpture: ")
+                if uWeight != '':
+                    uWeight = 'weight_kg=\'' + uWeight + '\','
+
+                uStyle = input("Please input the new style of the sculpture: ")
+                if uStyle != '':
+                    uStyle = 'Style=\'' + uStyle + '\','  
+
+                setCommand = "SET " + uMaterial + uHeight + uWeight + uStyle
+                if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1] 
+                selecting = False  
+
+
+            elif (i == '5'):
+                tableName = 'other'
+
+                cur.execute(f"select * from {tableName};")
+                print(200*'~')
+                print(f"{tableName} before any changes")
+                print()
+                printData(cur.column_names, cur.fetchall())
+                print(200*'~')
+                print()
+
+                #Getting the ID of the object and checking that it alreadys exist in the database
+                selecting = True
+                while selecting:
+                    ID_no = input("Please input the ID number of the object: ")
+                    if ID_no not in getCurOtherIDs(cur):
+                        print("\nInvalid Input, Please input an ID of a object in the other table that is already in the database\n")
+                    else:
+                        selecting = False       
+
+
+                uOther_type = input("Please input the type of this object: ")
+                if uOther_type != '':
+                    uOther_type = 'other_type=\'' + uOther_type + '\','  
+
+                uStyle = input("Please input the new style of the object: ")
+                if uStyle != '':
+                    uStyle = 'Style=\'' + uStyle + '\','  
+
+                setCommand = "SET " + uOther_type + uStyle
+                if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]  
+                selecting = False
+            else:
+                print("Invalid input")
+                print()
+
+    print()
+    cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE ID_no = " + ID_no + ';')
+
+    cur.execute(f"select * from {tableName};")
+    print(200*'~')
+    print(f"{tableName} after changes")
+    print()
+    printData(cur.column_names, cur.fetchall())
+    print(200*'~')
+
+
+
+
+
+
+
+
 
 
 def editArtists(cur, actionType = None):

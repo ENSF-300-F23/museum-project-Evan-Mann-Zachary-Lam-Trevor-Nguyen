@@ -12,6 +12,26 @@ def getCurArtIDs(cur):
     searchResult = cur.fetchall()
     return [str(x[0]) for x in searchResult]
 
+def getCurPaintingIDs(cur):
+    cur.execute("select ID_no from painting;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
+def getCurStatueIDs(cur):
+    cur.execute("select ID_no from statue;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
+def getCurSculptureIDs(cur):
+    cur.execute("select ID_no from sculpture;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
+def getCurOtherIDs(cur):
+    cur.execute("select ID_no from other;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
 def getCurExIDs(cur):
     cur.execute("select EX_ID from Exhibition;")
     searchResult = cur.fetchall()
