@@ -32,6 +32,16 @@ def getCurOtherIDs(cur):
     searchResult = cur.fetchall()
     return [str(x[0]) for x in searchResult]
 
+def getCurPermCollectIDs(cur):
+    cur.execute("select ID_no from permanent_collection;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
+def getCurBorrowCollectIDs(cur):
+    cur.execute("select ID_no from borrowed;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
 def getCurExIDs(cur):
     cur.execute("select EX_ID from Exhibition;")
     searchResult = cur.fetchall()

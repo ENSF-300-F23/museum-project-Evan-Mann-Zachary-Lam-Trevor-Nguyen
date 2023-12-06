@@ -77,7 +77,17 @@ def editArtObj(cur, actionType = None):
         #What they had been doing up until this point
         if Collection_type == 'permanent':
             objStatus = input("Please input the status of the object: ")    #Input the status of the object
-            cost = input('Please input the cost of the object: ')           #Input the cost of the object
+            
+            selecting = True
+            cost = input("Please input the cost of the art object: ")
+            while selecting:
+                selecting = False
+                try:    
+                    val = float(cost) 
+                except ValueError:  
+                    selecting = True  
+                    cost = input("Invalid input, please input a decimal number: ")
+            cost = cost[:cost.find('.') + 3]
 
             #Inputting the date aqquired requires it to follow a very specific format due to SQL's constraints on how a DATE type
             #Is formatted so these checks make sure that the correct form is followed
@@ -545,12 +555,6 @@ def editArtObj(cur, actionType = None):
         print()
 
 
-
-
-
-
-
-
 def editArtists(cur, actionType = None):
     #Asking the user what kind of action they would like to do on the art object tables
     print("What kind of action would you like to do")
@@ -632,7 +636,6 @@ def editArtists(cur, actionType = None):
         printData(cur.column_names, cur.fetchall(), 'Artist')
         print(200*'~')
         print()
-
 
     if (actionType == "UPDATE"):
         tableName = 'Artist'
@@ -724,8 +727,6 @@ def editArtists(cur, actionType = None):
         print(200*'~')
         print()
 
-
-
     if (actionType == "DELETE"):
         #display the current state of the artist table before changes
         cur.execute("select * from artist;")
@@ -767,23 +768,90 @@ def editArtists(cur, actionType = None):
 
 
 def editPermCollection(cur, actionType = None):
-    #Asking the user what kind of action they would like to do on the art object tables
-    print("What kind of action would you like to do")
-    while actionType == None:
-        s = input("(1) Update \t (2) Delete: ")
-        if (s == '1'):
-            actionType = "UPDATE"
-        elif (s == '2'):
-            actionType = "DELETE"
-        else:
-            print()
-            print("Invalid input")
-            print()
+    tableName = 'permanent_collection'
 
-    if (actionType == "UPDATE"):
-        pass
-    if (actionType == "DELETE"):
-        pass
+    #Asking the user what kind of action they would like to do on the art object tables
+    print()
+    print('Note that to insert into or delete from the permanent collection, the art object menu must be used')
+    print()
+    print('Please following the instructions to update a value')
+
+    #Check if their updating a specific art object or if its a subclass of one
+    print()
+    
+    print()
+    print('-----------------------------------------------------------------------------------------------------------')
+    print('| at any point when inputting new values leave the space blank to leave the value as what it currently is |')
+    print('-----------------------------------------------------------------------------------------------------------')
+    print()
+
+
+    
+    cur.execute(f"select * from {tableName};")
+    print(200*'~')
+    print(f"{tableName} before any changes")
+    print()
+    printData(cur.column_names, cur.fetchall())
+    print(200*'~')
+    print()
+    #Getting the ID of the object and checking that it alreadys exist in the permanent collection
+    selecting = True
+    while selecting:
+        ID_no = input("Please input the ID number of the art object: ")
+        if ID_no not in getCurPermCollectIDs(cur):
+            print("\nInvalid Input, Please input an ID of an art object that is already in the permanent collection\n")
+        else:
+            selecting = False
+
+    #Inputting a new object status
+    uObjStatus = input("Please input the new status of the object: ")
+    if uObjStatus != '':
+        uObjStatus = 'object_status=\'' + uObjStatus + '\','
+
+
+    #Input the cost
+    selecting = True
+    uCost = input("Please input the new cost of the art object: ")
+    if uCost != '':
+        while selecting:
+            selecting = False
+            try:    
+                val = float(uCost) 
+            except ValueError:  
+                selecting = True  
+                uCost = input("Invalid input, please input a decimal number: ")
+        uCost = uCost[:uCost.find('.') + 3]
+
+    if uCost != '':
+        uCost = 'cost=\'' + uCost + '\','
+
+    uDate_aqquired = input('Please input the new date the object was aqquired on (XXXX-XX-XX [year - month - day]): ')
+    selecting = True
+    if uDate_aqquired == '':
+        selecting = False
+    while selecting:
+        if uDate_aqquired.replace('-', '').isnumeric() and uDate_aqquired[4] == '-' and uDate_aqquired[7] == '-' and len(uDate_aqquired) == 10 and int(uDate_aqquired[5:7]) <= 12 and int(uDate_aqquired[8:]) <=31:
+            selecting = False
+        else:
+            uDate_aqquired = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
+
+    if uDate_aqquired != '':
+        uDate_aqquired = 'date_aqquired=\'' + uDate_aqquired + '\','  
+
+    setCommand = "SET " + uObjStatus + uCost + uDate_aqquired
+    if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]
+    selecting = False
+
+    cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE ID_no = " + ID_no + ';')
+
+    cur.execute(f"select * from {tableName};")
+    print(200*'~')
+    print(f"{tableName} after any changes")
+    print()
+    printData(cur.column_names, cur.fetchall())
+    print(200*'~')
+    print()
+
 
 
 def editBorrowCollection(cur, actionType = None):
