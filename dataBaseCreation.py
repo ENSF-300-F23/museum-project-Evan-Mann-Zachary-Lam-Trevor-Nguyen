@@ -4,7 +4,7 @@ cnx = mysql.connector.connect(
     host="127.0.0.1",
     port=3306,
     user='root',
-    password= '33104001SqL?') #Input local system password
+    password= '') #Input local system password
 
 
 # Get a cursor

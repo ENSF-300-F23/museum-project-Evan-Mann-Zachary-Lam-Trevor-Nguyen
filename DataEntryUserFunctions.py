@@ -246,14 +246,6 @@ def editArtObj(cur, actionType = None):
 
             print()
 
-
-
-
-
-
-
-
-
     if (actionType == "UPDATE"):
         #Check if their updating a specific art object or if its a subclass of one
         print()
@@ -277,7 +269,7 @@ def editArtObj(cur, actionType = None):
                 print(200*'~')
                 print(f"{tableName} before any changes")
                 print()
-                printData(cur.column_names, cur.fetchall())
+                printData(cur.column_names, cur.fetchall(), 'Art Object')
                 print(200*'~')
                 print()
                 #Getting the ID of the object and checking that it alreadys exist in the database
@@ -356,7 +348,7 @@ def editArtObj(cur, actionType = None):
                 print(200*'~')
                 print(f"{tableName} before any changes")
                 print()
-                printData(cur.column_names, cur.fetchall())
+                printData(cur.column_names, cur.fetchall(), 'Art Object')
                 print(200*'~')
                 print()
                 #Getting the ID of the object and checking that it alreadys exist in the database
@@ -507,17 +499,50 @@ def editArtObj(cur, actionType = None):
                 print("Invalid input")
                 print()
 
-    print()
-    cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE ID_no = " + ID_no + ';')
+        print()
+        cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE ID_no = " + ID_no + ';')
 
-    cur.execute(f"select * from {tableName};")
-    print(200*'~')
-    print(f"{tableName} after changes")
-    print()
-    printData(cur.column_names, cur.fetchall())
-    print(200*'~')
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} after changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
 
+    if (actionType == "DELETE"):
+        #Print table before deletion 
+        tableName = 'art_object'
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Art Object')
+        print(200*'~')
+        print()
 
+        #Getting the ID of the object and checking that it alreadys exist in the database
+        selecting = True
+        while selecting:
+            ID_no = input("Please input the ID number of the art object: ")
+            if ID_no not in getCurArtIDs(cur):
+                print("\nInvalid Input, Please input an ID of an art object that is already in the database\n")
+            else:
+                selecting = False
+
+        print()
+        print('Object deleted from art_object and its respective type sub table')
+        print()
+
+        cur.execute(f"DELETE FROM art_object WHERE ID_no = " + ID_no)
+
+        #Print table after deletion
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Art Object')
+        print(200*'~')
+        print()
 
 
 
