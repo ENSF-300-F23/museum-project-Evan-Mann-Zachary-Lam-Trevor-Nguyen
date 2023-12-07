@@ -898,7 +898,7 @@ def editArtists(cur, actionType = None):
         print()
 
 
-def editPermCollection(cur, actionType = None):
+def editPermCollection(cur):
     tableName = 'permanent_collection'
 
     #Asking the user what kind of action they would like to do on the art object tables
@@ -1001,7 +1001,7 @@ def editPermCollection(cur, actionType = None):
     print()
 
 
-def editBorrowCollection(cur, actionType = None):
+def editBorrowCollection(cur):
     tableName = 'borrowed'
 
     #Asking the user what kind of action they would like to do on the art object tables
@@ -1520,7 +1520,32 @@ def editSepCollections(cur, actionType = None):
         print()
 
 
+def editDisplayedIn(cur, actionType = None):
+    #Asking the user what kind of action they would like to do on the art object tables
+    print("What kind of action would you like to do")
+    while actionType == None:
+        s = input("(1) Insert \t (2) Update \t (3) Delete: ")
+        if (s == '1'):
+            actionType = "INSERT"
+        elif (s == '2'):
+            actionType = "UPDATE"
+        elif (s == '3'):
+            actionType = "DELETE"
+        else:
+            print()
+            print("Invalid input")
+            print()
 
+        tableName = 'displayed_in'
+        print()
+        #display the current state of the collection table before changes
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print("displayed in before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
 
 
 #Data entry console
@@ -1530,7 +1555,7 @@ def data_entry_console(cur):
         print("~~~~~~~~~~~~~~~~ Database Search ~~~~~~~~~~~~~~~~")
         print("Please choose the part of the data base you wish to view")
         print("(1) Art Objects \t (2) Artists \t\t\t (3) Permanent Collection \t (4) Borrowed Collection")
-        mLevelOneChoice = input("(5) Exhibitions \t (6) Seperate Collections \t (0) Quit the Program : ")
+        mLevelOneChoice = input("(5) Exhibitions \t (6) Seperate Collections \t (7) Displayed In \t (0) Quit the Program : ")
         print()
         print()
 
@@ -1563,6 +1588,10 @@ def data_entry_console(cur):
             editSepCollections(cur)
             break
 
+        #Seperate Collections menu
+        while mLevelOneChoice == '7':  
+            editDisplayedIn(cur)
+            break
 
         if mLevelOneChoice == '0':
             break

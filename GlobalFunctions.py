@@ -52,6 +52,8 @@ def getCurCollectionIDs(cur):
     searchResult = cur.fetchall()
     return [str(x[0]) for x in searchResult]
 
+
+
 #Print function to print any set of data granted the header and data are provided
 def printData(header, data, type = 'basic'):
     if type == 'Art Object':
@@ -87,10 +89,10 @@ def printData(header, data, type = 'basic'):
     else:
         header_size=len(header)
         for col_name in header:
-            print(f"{col_name:<30s}",end='')
+            print(f"{col_name:<40s}",end='')
         print()
         print(200*'-')
         for row in data:
             for val in row:
-                print("{:<30s}".format(str(val)),end='')
+                print("{:<40s}".format(str(val)),end='')
             print()

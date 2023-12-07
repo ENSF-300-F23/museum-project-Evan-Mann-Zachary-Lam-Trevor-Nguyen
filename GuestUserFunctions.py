@@ -3,42 +3,103 @@ from GlobalFunctions import *
 from DataEntryUserFunctions import *
 from AdminUserFunctions import *
 
-
 #Guest user search functions
 def searchArtObjects(searchItem, cur):
-    instr = ""
-    join = ""
 
     showArtists = input("Do you want to see the artist who created each piece as well? (Y  or N): ")
     showCollection = input("Do you want to see the collection each piece comes from (Y or N): ")
     showDetailedInfo = input("Would you like extra details such as the pieces origin or epoch (Y or N): ")
 
+    options = ''
+    
+    #options will append the choices to the query afterwards, which will execute depending on inputs here
+    if showArtists.upper() == 'Y':
+        options += ', Artist_name'
+    if showCollection.upper() == 'Y':
+        options += ', Collection_Type'
+    if showDetailedInfo.upper() == 'Y':
+        options += ', Epoch, Origin'
+    
+    #query takes in all the options from if statements above
+    print()
+    query =f"SELECT Title{options} FROM art_object WHERE object_type LIKE '{searchItem}';"
+    cur.execute(query)
+    searchResult = cur.fetchall()
+    printData(cur.column_names, searchResult)
+    print()
+
+
 def searchArtists(searchItem, cur):
-    instr = ""
-    join = ""
 
     if searchItem == "Name":
         artistName = input("Please input the artists name you're interested in: ")
-        showPiecesToo = input("Would you like to see the pieces this artist created? (Y or N): ") # this could come after the artist info is printed to the screen instead
+        print()
+        query = f"SELECT Artist_name, Title FROM art_object WHERE Artist_Name like '%{artistName}%'"
+        cur.execute(query)
+        searchResult = cur.fetchall()
+        if len(searchResult) == 0: #if searchResult is empty, then just return
+            print("No artists found with this search.")
+            print()
+            return
+        printData(cur.column_names, searchResult)
+        print()
+
+        showOrigin = input("Would you like to see the origin of the pieces this artist created? (Y or N): ") 
+        if showOrigin.upper() == 'Y':
+            query = f"SELECT Artist_name, Title, Origin FROM art_object WHERE Artist_Name like '%{artistName}%'"
+            cur.execute(query)
+            searchResult = cur.fetchall()
+            printData(cur.column_names, searchResult)
+            print()
 
     elif searchItem == "Epoch":
-        artistEpoch = input("Please input the epoch of the artist you're interested in: ")
-
-    elif searchItem == "All":
+        artistEpoch = input("Please input the Epoch of the artist you're interested in: ")
+        print()
+        query = f"SELECT Artist_name, Epoch, Title FROM art_object WHERE Epoch like '%{artistEpoch}%'"
+        cur.execute(query)
+        searchResult = cur.fetchall()
+        if len(searchResult) == 0: #if searchResult is empty, then just return
+            print("No epochs found with this search.")
+            print()
+            return
+        printData(cur.column_names, searchResult)
         print()
 
 
-    # This should print 
+    elif searchItem == "All":
+        cur.execute('SELECT Artist_Name FROM art_object WHERE Artist_Name IS NOT NULL')
+        searchResult = cur.fetchall()
+        printData(cur.column_names, searchResult)
+
+
 
 def searchExhibitions(searchItem, cur):
-    instr = ""
-    join = ""
 
     if searchItem == "ID":
-        artistName = input("Please input the ID of the exhibit you're interested in: ")
+        ExhibID = input("Please input the ID of the exhibit you're interested in: ")
+        print()
+        query = f"SELECT * FROM exhibition WHERE EX_ID like '%{ExhibID}%'"
+        cur.execute(query)
+        searchResult = cur.fetchall()
+        if len(searchResult) == 0: #if searchResult is empty, then just return
+            print("No exhibition ID matches with this search.")
+            print()
+            return
+        printData(cur.column_names, searchResult)
+        print()
         
     elif searchItem == "Name":
-        artistEpoch = input("Please input the name of the exhibit you're interested in: ")
+        ExhibName = input("Please input the name of the exhibit you're interested in: ")
+        print()
+        query = f"SELECT * FROM exhibition WHERE EX_name like '%{ExhibName}%'"
+        cur.execute(query)
+        searchResult = cur.fetchall()
+        if len(searchResult) == 0: #if searchResult is empty, then just return
+            print("No exhibition names matches with this search.")
+            print()
+            return
+        printData(cur.column_names, searchResult)
+        print()
 
 
 
@@ -60,17 +121,17 @@ def guest_console(cur):
         #Art piece menu
         while mLevelOneChoice == '1':
             print("~~~~~~~~~~~~~~~~ ART PIECES ~~~~~~~~~~~~~~~~")
-            print("Please input the kind of art pieces you're interested in veiwing")
-            mLevelTwoChoice = input("(1) Paintings \t (2) Sculptures \t (3) Statues \t (4) Other \t (0) Go Up a Level: ")
+            print("Please input the kind of art pieces you're interested in viewing:")
+            mLevelTwoChoice = input("(1) Painting \t (2) Sculpture \t (3) Statue \t (4) Other \t (0) Go Up a Level: ")
             print()
             print()
 
             if mLevelTwoChoice == '1':
-                searchArtObjects("Paintings", cur)
+                searchArtObjects("Painting", cur)
             elif mLevelTwoChoice == '2':
-                searchArtObjects("Sculptures", cur)
+                searchArtObjects("Sculpture", cur)
             elif mLevelTwoChoice == '3':
-                searchArtObjects("Statues", cur)
+                searchArtObjects("Statue", cur)
             elif mLevelTwoChoice == '4':
                 searchArtObjects("Other", cur)
             elif mLevelTwoChoice == '0':
@@ -84,8 +145,8 @@ def guest_console(cur):
         #Artists menu 
         while mLevelOneChoice == '2':
             print("~~~~~~~~~~~~~~~~ ARTISTS ~~~~~~~~~~~~~~~~")
-            print("Please input the part of the database you're interested in veiwing")
-            mLevelTwoChoice = input("(1) Search Artist by Name \t (2) Search Artist by epoch \t (3) See a list of all artists \t (0) Go Up a Level: ")
+            print("Please input the part of the database you're interested in viewing:")
+            mLevelTwoChoice = input("(1) Search Artist by Name \t (2) Search Artist by Epoch \t (3) See a list of all artists \t (0) Go Up a Level: ")
             print()
             print()
 
@@ -106,8 +167,8 @@ def guest_console(cur):
         #Exhibitions Menu
         while mLevelOneChoice == '3':
             print("~~~~~~~~~~~~~~~~ EXHIBITIONS ~~~~~~~~~~~~~~~~")
-            print("Please input the part of the database you're interested in veiwing")
-            mLevelTwoChoice = input("(1) Search Exhibitions by ID \t (2) Search Exhibitions by name \t (0) Go Up a Level: ")
+            print("Please input the part of the database you're interested in viewing:")
+            mLevelTwoChoice = input("(1) Search Exhibitions by ID \t (2) Search Exhibitions by Name \t (0) Go Up a Level: ")
             print()
             print()
             
