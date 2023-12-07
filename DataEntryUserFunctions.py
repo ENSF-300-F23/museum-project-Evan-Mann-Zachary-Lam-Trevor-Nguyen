@@ -797,7 +797,7 @@ def editPermCollection(cur, actionType = None):
     #Getting the ID of the object and checking that it alreadys exist in the permanent collection
     selecting = True
     while selecting:
-        ID_no = input("Please input the ID number of the art object: ")
+        ID_no = input("Please input the ID number of the art object you wish to update: ")
         if ID_no not in getCurPermCollectIDs(cur):
             print("\nInvalid Input, Please input an ID of an art object that is already in the permanent collection\n")
         else:
@@ -855,24 +855,101 @@ def editPermCollection(cur, actionType = None):
 
 
 def editBorrowCollection(cur, actionType = None):
+    tableName = 'borrowed'
+
     #Asking the user what kind of action they would like to do on the art object tables
-    print("What kind of action would you like to do")
+    print()
+    print('Note that to insert into or delete from the borrowed collection, the art object menu must be used')
+    print()
+    print('Please following the instructions to update a value')
 
-    while actionType == None:
-        s = input("(1) Update \t (2) Delete: ")
-        if (s == '1'):
-            actionType = "UPDATE"
-        elif (s == '2'):
-            actionType = "DELETE"
+    #Check if their updating a specific art object or if its a subclass of one
+    print()
+    
+    print()
+    print('-----------------------------------------------------------------------------------------------------------')
+    print('| at any point when inputting new values leave the space blank to leave the value as what it currently is |')
+    print('-----------------------------------------------------------------------------------------------------------')
+    print()
+
+
+    
+    cur.execute(f"select * from {tableName};")
+    print(200*'~')
+    print(f"{tableName} before any changes")
+    print()
+    printData(cur.column_names, cur.fetchall())
+    print(200*'~')
+    print()
+    #Getting the ID of the object and checking that it alreadys exist in the permanent collection
+    selecting = True
+    while selecting:
+        ID_no = input("Please input the ID number of the art object you wish to update: ")
+        if ID_no not in getCurBorrowCollectIDs(cur):
+            print("\nInvalid Input, Please input an ID of an art object that is already in the borrowed collection\n")
         else:
-            print()
-            print("Invalid input")
-            print()
+            selecting = False
 
-    if (actionType == "UPDATE"):
-        pass
-    if (actionType == "DELETE"):
-        pass
+    #Inputting a new object status
+    uCollection = input("Please input the new collectioin the object was borrowed from, it must already be in the data base: ")
+    selecting = True
+    while selecting:
+        if uCollection == '':
+            selecting = False
+        elif uCollection not in getCurCollectionIDs(cur):
+            uCollection = input("\nInvalid Input, Please input the name of a collection that is already in the database: ")
+        else:
+            selecting = False
+    
+    if uCollection != '':
+        uCollection = 'collection=\'' + uCollection + '\','
+
+
+
+    uDate_borrowed = input('Please input the new date the object was borrowed on (XXXX-XX-XX [year - month - day]): ')
+    selecting = True
+    if uDate_borrowed == '':
+        selecting = False
+    while selecting:
+        if uDate_borrowed.replace('-', '').isnumeric() and uDate_borrowed[4] == '-' and uDate_borrowed[7] == '-' and len(uDate_borrowed) == 10 and int(uDate_borrowed[5:7]) <= 12 and int(uDate_borrowed[8:]) <=31:
+            selecting = False
+        else:
+            uDate_borrowed = input("Invalid date, please re enter the date when the object was borrowed (XXXX-XX-XX [year - month - day]): ")
+
+    if uDate_borrowed != '':
+        uDate_borrowed = 'date_borrowed=\'' + uDate_borrowed + '\','  
+
+
+   #Input the date it was returned 
+    uDate_Returned = input('Please input the new date the object was returned on or \"None\" if it hasn\'t been (XXXX-XX-XX [year - month - day]): ')
+    selecting = True
+    if uDate_Returned == 'None' or uDate_Returned == '':
+        selecting = False
+    while selecting:
+        if uDate_Returned.replace('-', '').isnumeric() and uDate_Returned[4] == '-' and uDate_Returned[7] == '-' and len(uDate_Returned) == 10 and int(uDate_Returned[5:7]) <= 12 and int(uDate_Returned[8:]) <=31:
+            selecting = False
+        else:
+            uDate_Returned = input("Invalid date, please re enter the new date the piece was returned: ")
+
+    if uDate_Returned == 'None':
+        uDate_Returned = 'date_returned=null,'
+    elif uDate_Returned != '':
+        uDate_Returned = 'date_returned=\'' + uDate_Returned + '\',' 
+
+
+    setCommand = "SET " + uCollection + uDate_borrowed + uDate_Returned
+    if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]
+
+
+    cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE ID_no = " + ID_no + ';')
+
+    cur.execute(f"select * from {tableName};")
+    print(200*'~')
+    print(f"{tableName} after any changes")
+    print()
+    printData(cur.column_names, cur.fetchall())
+    print(200*'~')
+    print()
 
 
 
