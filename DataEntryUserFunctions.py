@@ -101,8 +101,11 @@ def editArtObj(cur, actionType = None):
             dateAqquired = input("Please input the date the object was put into the permanent collection (XXXX-XX-XX [year - month - day]): ")
             selecting = True
             while selecting:
-                if dateAqquired.replace('-', '').isnumeric() and dateAqquired[4] == '-' and dateAqquired[7] == '-' and len(dateAqquired) == 10 and int(dateAqquired[5:7]) <= 12 and int(dateAqquired[8:]) <=31:
-                    selecting = False
+                if len(dateAqquired) == 10:
+                    if dateAqquired.replace('-', '').isnumeric() and dateAqquired[4] == '-' and dateAqquired[7] == '-' and  int(dateAqquired[5:7]) <= 12 and int(dateAqquired[8:]) <=31:
+                        selecting = False
+                    else:
+                        dateAqquired = input("Invalid date, please re enter the date the piece was aqquired: ")
                 else:
                     dateAqquired = input("Invalid date, please re enter the date the piece was aqquired: ")
             #Creation of the command for inserting a new permanent collection value, using the values just inputted
@@ -123,9 +126,11 @@ def editArtObj(cur, actionType = None):
             dateBorrowed = input("Please input the date the object was borrowed on (XXXX-XX-XX [year - month - day]): ")
             selecting = True
             while selecting:
-
-                if dateBorrowed.replace('-', '').isnumeric() and dateBorrowed[4] == '-' and dateBorrowed[7] == '-' and len(dateBorrowed) == 10 and int(dateBorrowed[5:7]) <= 12 and int(dateBorrowed[8:]) <=31:
-                    selecting = False
+                if len(dateBorrowed) == 10:
+                    if dateBorrowed.replace('-', '').isnumeric() and dateBorrowed[4] == '-' and dateBorrowed[7] == '-' and  int(dateBorrowed[5:7]) <= 12 and int(dateBorrowed[8:]) <=31:
+                        selecting = False
+                    else:
+                        dateBorrowed = input("Invalid date, please re enter the date the piece was borrowed: ") 
                 else:
                     dateBorrowed = input("Invalid date, please re enter the date the piece was borrowed: ")            
 
@@ -135,8 +140,11 @@ def editArtObj(cur, actionType = None):
             if dateReturned == 'None':
                 selecting = False
             while selecting:
-                if dateReturned.replace('-', '').isnumeric() and dateReturned[4] == '-' and dateReturned[7] == '-' and len(dateReturned) == 10 and int(dateReturned[5:7]) <= 12 and int(dateReturned[8:]) <=31:
-                    selecting = False
+                if len(dateReturned) == 10:
+                    if dateReturned.replace('-', '').isnumeric() and dateReturned[4] == '-' and dateReturned[7] == '-' and  int(dateReturned[5:7]) <= 12 and int(dateReturned[8:]) <=31:
+                        selecting = False
+                    else:
+                        dateReturned = input("Invalid date, please re enter the date the piece was returned: ")
                 else:
                     dateReturned = input("Invalid date, please re enter the date the piece was returned: ")
             
@@ -604,8 +612,11 @@ def editArtists(cur, actionType = None):
         if date_born == 'None':
             selecting = False
         while selecting:
-            if date_born.replace('-', '').isnumeric() and date_born[4] == '-' and date_born[7] == '-' and len(date_born) == 10 and int(date_born[5:7]) <= 12 and int(date_born[8:]) <=31:
-                selecting = False
+            if len(date_born) == 10:
+                if date_born.replace('-', '').isnumeric() and date_born[4] == '-' and date_born[7] == '-' and int(date_born[5:7]) <= 12 and int(date_born[8:]) <=31:
+                    selecting = False
+                else:
+                    date_born = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
             else:
                 date_born = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
 
@@ -615,8 +626,11 @@ def editArtists(cur, actionType = None):
         if date_died == 'None':
             selecting = False
         while selecting:
-            if date_died.replace('-', '').isnumeric() and date_died[4] == '-' and date_died[7] == '-' and len(date_died) == 10 and int(date_died[5:7]) <= 12 and int(date_died[8:]) <=31:
-                selecting = False
+            if len(date_died) == 10:
+                if date_died.replace('-', '').isnumeric() and date_died[4] == '-' and date_died[7] == '-' and  int(date_died[5:7]) <= 12 and int(date_died[8:]) <=31:
+                    selecting = False
+                else:
+                    date_died = input("Invalid date, please re enter the date when the artist died (XXXX-XX-XX [year - month - day]): ")
             else:
                 date_died = input("Invalid date, please re enter the date when the artist died (XXXX-XX-XX [year - month - day]): ")
 
@@ -677,8 +691,11 @@ def editArtists(cur, actionType = None):
         if uDate_born == 'None' or uDate_born == '':
             selecting = False
         while selecting:
-            if uDate_born.replace('-', '').isnumeric() and uDate_born[4] == '-' and uDate_born[7] == '-' and len(uDate_born) == 10 and int(uDate_born[5:7]) <= 12 and int(uDate_born[8:]) <=31:
-                selecting = False
+            if len(uDate_born) == 10:
+                if uDate_born.replace('-', '').isnumeric() and uDate_born[4] == '-' and uDate_born[7] == '-' and  int(uDate_born[5:7]) <= 12 and int(uDate_born[8:]) <=31:
+                    selecting = False
+                else:
+                    uDate_born = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
             else:
                 uDate_born = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
 
@@ -693,8 +710,11 @@ def editArtists(cur, actionType = None):
         if uDate_died == 'None' or uDate_died == '':
             selecting = False
         while selecting:
-            if uDate_died.replace('-', '').isnumeric() and uDate_died[4] == '-' and uDate_died[7] == '-' and len(uDate_died) == 10 and int(uDate_died[5:7]) <= 12 and int(uDate_died[8:]) <=31:
-                selecting = False
+            if len(uDate_died) == 10:
+                if uDate_died.replace('-', '').isnumeric() and uDate_died[4] == '-' and uDate_died[7] == '-' and  int(uDate_died[5:7]) <= 12 and int(uDate_died[8:]) <=31:
+                    selecting = False
+                else:
+                    uDate_died = input("Invalid date, please re enter the date when the artist died (XXXX-XX-XX [year - month - day]): ")
             else:
                 uDate_died = input("Invalid date, please re enter the date when the artist died (XXXX-XX-XX [year - month - day]): ")
 
@@ -817,7 +837,7 @@ def editPermCollection(cur, actionType = None):
                 print("Invalid input, please input Displayed, Stored or Loaned")
         else:
             selecting = False
-            
+
     if uObjStatus != '':
         uObjStatus = 'object_status=\'' + uObjStatus + '\','
 
@@ -843,8 +863,11 @@ def editPermCollection(cur, actionType = None):
     if uDate_aqquired == '':
         selecting = False
     while selecting:
-        if uDate_aqquired.replace('-', '').isnumeric() and uDate_aqquired[4] == '-' and uDate_aqquired[7] == '-' and len(uDate_aqquired) == 10 and int(uDate_aqquired[5:7]) <= 12 and int(uDate_aqquired[8:]) <=31:
-            selecting = False
+        if len(uDate_aqquired) == 10:
+            if uDate_aqquired.replace('-', '').isnumeric() and uDate_aqquired[4] == '-' and uDate_aqquired[7] == '-' and  int(uDate_aqquired[5:7]) <= 12 and int(uDate_aqquired[8:]) <=31:
+                selecting = False
+            else:
+                uDate_aqquired = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
         else:
             uDate_aqquired = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
 
@@ -923,8 +946,11 @@ def editBorrowCollection(cur, actionType = None):
     if uDate_borrowed == '':
         selecting = False
     while selecting:
-        if uDate_borrowed.replace('-', '').isnumeric() and uDate_borrowed[4] == '-' and uDate_borrowed[7] == '-' and len(uDate_borrowed) == 10 and int(uDate_borrowed[5:7]) <= 12 and int(uDate_borrowed[8:]) <=31:
-            selecting = False
+        if len(uDate_borrowed) == 10:
+            if uDate_borrowed.replace('-', '').isnumeric() and uDate_borrowed[4] == '-' and uDate_borrowed[7] == '-' and  int(uDate_borrowed[5:7]) <= 12 and int(uDate_borrowed[8:]) <=31:
+                selecting = False
+            else:
+                uDate_borrowed = input("Invalid date, please re enter the date when the object was borrowed (XXXX-XX-XX [year - month - day]): ")
         else:
             uDate_borrowed = input("Invalid date, please re enter the date when the object was borrowed (XXXX-XX-XX [year - month - day]): ")
 
@@ -938,8 +964,11 @@ def editBorrowCollection(cur, actionType = None):
     if uDate_Returned == 'None' or uDate_Returned == '':
         selecting = False
     while selecting:
-        if uDate_Returned.replace('-', '').isnumeric() and uDate_Returned[4] == '-' and uDate_Returned[7] == '-' and len(uDate_Returned) == 10 and int(uDate_Returned[5:7]) <= 12 and int(uDate_Returned[8:]) <=31:
-            selecting = False
+        if len(uDate_Returned) == 10:
+            if uDate_Returned.replace('-', '').isnumeric() and uDate_Returned[4] == '-' and uDate_Returned[7] == '-' and  int(uDate_Returned[5:7]) <= 12 and int(uDate_Returned[8:]) <=31:
+                selecting = False
+            else:
+                uDate_Returned = input("Invalid date, please re enter the new date the piece was returned: ")
         else:
             uDate_Returned = input("Invalid date, please re enter the new date the piece was returned: ")
 
@@ -1007,8 +1036,11 @@ def editExhibitions(cur, actionType = None):
         start_Date = input('Please input the date the exhibition starts on (XXXX-XX-XX [year - month - day]): ')
         selecting = True
         while selecting:
-            if start_Date.replace('-', '').isnumeric() and start_Date[4] == '-' and start_Date[7] == '-' and len(start_Date) == 10 and int(start_Date[5:7]) <= 12 and int(start_Date[8:]) <=31:
-                selecting = False
+            if len(start_Date) == 10:
+                if start_Date.replace('-', '').isnumeric() and start_Date[4] == '-' and start_Date[7] == '-'  and int(start_Date[5:7]) <= 12 and int(start_Date[8:]) <=31:
+                    selecting = False
+                else:
+                    start_Date = input("Invalid date, please re enter the date when the exhibition starts (XXXX-XX-XX [year - month - day]): ") 
             else:
                 start_Date = input("Invalid date, please re enter the date when the exhibition starts (XXXX-XX-XX [year - month - day]): ") 
         
@@ -1016,8 +1048,11 @@ def editExhibitions(cur, actionType = None):
         end_Date = input('Please input the date the exhibition ends on (XXXX-XX-XX [year - month - day]): ')
         selecting = True
         while selecting:
-            if end_Date.replace('-', '').isnumeric() and end_Date[4] == '-' and end_Date[7] == '-' and len(end_Date) == 10 and int(end_Date[5:7]) <= 12 and int(end_Date[8:]) <=31:
-                selecting = False
+            if len(end_Date) == 10:
+                if end_Date.replace('-', '').isnumeric() and end_Date[4] == '-' and end_Date[7] == '-' and int(end_Date[5:7]) <= 12 and int(end_Date[8:]) <=31:
+                    selecting = False
+                else:
+                    end_Date = input("Invalid date, please re enter the date when the exhibition ends (XXXX-XX-XX [year - month - day]): ") 
             else:
                 end_Date = input("Invalid date, please re enter the date when the exhibition ends (XXXX-XX-XX [year - month - day]): ") 
 
@@ -1110,8 +1145,11 @@ def editExhibitions(cur, actionType = None):
         if uStart_Date == '':
             selecting = False
         while selecting:
-            if uStart_Date.replace('-', '').isnumeric() and uStart_Date[4] == '-' and uStart_Date[7] == '-' and len(uStart_Date) == 10 and int(uStart_Date[5:7]) <= 12 and int(uStart_Date[8:]) <=31:
-                selecting = False
+            if len(uStart_Date) == 10:
+                if uStart_Date.replace('-', '').isnumeric() and uStart_Date[4] == '-' and uStart_Date[7] == '-'  and int(uStart_Date[5:7]) <= 12 and int(uStart_Date[8:]) <=31:
+                    selecting = False
+                else:
+                    uStart_Date = input("Invalid date, please re enter the date when the exhibition starts (XXXX-XX-XX [year - month - day]): ")
             else:
                 uStart_Date = input("Invalid date, please re enter the date when the exhibition starts (XXXX-XX-XX [year - month - day]): ")
         if uStart_Date != '':
@@ -1123,8 +1161,11 @@ def editExhibitions(cur, actionType = None):
         if uEnd_Date == '':
             selecting = False
         while selecting:
-            if uEnd_Date.replace('-', '').isnumeric() and uEnd_Date[4] == '-' and uEnd_Date[7] == '-' and len(uEnd_Date) == 10 and int(uEnd_Date[5:7]) <= 12 and int(uEnd_Date[8:]) <=31:
-                selecting = False
+            if len(uEnd_Date) == 10:
+                if uEnd_Date.replace('-', '').isnumeric() and uEnd_Date[4] == '-' and uEnd_Date[7] == '-'  and int(uEnd_Date[5:7]) <= 12 and int(uEnd_Date[8:]) <=31:
+                    selecting = False
+                else:
+                    uEnd_Date = input("Invalid date, please re enter the date when the exhibition ends (XXXX-XX-XX [year - month - day]): ")
             else:
                 uEnd_Date = input("Invalid date, please re enter the date when the exhibition ends (XXXX-XX-XX [year - month - day]): ")
         if uEnd_Date != '':
