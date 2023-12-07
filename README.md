@@ -5,7 +5,6 @@
 - evan.mann@ucalgary.ca Evan Mann (30141069): Relational schema, admin interface, data entry interface
 - trevor.nguyen@ucalgary.ca Trevor Nguyen (30176877): Query code, browsing interface
 ## How to Use & Run the Program:
-- Run DatabaseCreation.py
 - Enter your username and password
 - Select your user type
 - If you are a data entry user:
