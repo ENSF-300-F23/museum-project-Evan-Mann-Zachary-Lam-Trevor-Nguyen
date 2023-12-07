@@ -905,7 +905,7 @@ def editPermCollection(cur, actionType = None):
     print()
     print('Note that to insert into or delete from the permanent collection, the art object menu must be used')
     print()
-    print('Please following the instructions to update a value')
+    print('Please follow the instructions to update a value')
 
     #Check if their updating a specific art object or if its a subclass of one
     print()
@@ -979,8 +979,8 @@ def editPermCollection(cur, actionType = None):
         else:
             uDate_acquired = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
 
-    if uDate_acquired != '':
-        uDate_acquired = 'date_acquired=\'' + uDate_acquired + '\','  
+    if uDate_aqquired != '':
+        uDate_aqquired = 'date_aqquired=\'' + uDate_aqquired + '\','  
 
     setCommand = "SET " + uObjStatus + uCost + uDate_acquired
     if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]
