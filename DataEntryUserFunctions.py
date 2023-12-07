@@ -862,23 +862,23 @@ def editPermCollection(cur, actionType = None):
     if uCost != '':
         uCost = 'cost=\'' + uCost + '\','
 
-    uDate_aqquired = input('Please input the new date the object was aqquired on (XXXX-XX-XX [year - month - day]): ')
+    uDate_acquired = input('Please input the new date the object was aqquired on (XXXX-XX-XX [year - month - day]): ')
     selecting = True
-    if uDate_aqquired == '':
+    if uDate_acquired == '':
         selecting = False
     while selecting:
-        if len(uDate_aqquired) == 10:
-            if uDate_aqquired.replace('-', '').isnumeric() and uDate_aqquired[4] == '-' and uDate_aqquired[7] == '-' and  int(uDate_aqquired[5:7]) <= 12 and int(uDate_aqquired[8:]) <=31:
+        if len(uDate_acquired) == 10:
+            if uDate_acquired.replace('-', '').isnumeric() and uDate_acquired[4] == '-' and uDate_acquired[7] == '-' and  int(uDate_acquired[5:7]) <= 12 and int(uDate_acquired[8:]) <=31:
                 selecting = False
             else:
-                uDate_aqquired = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
+                uDate_acquired = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
         else:
-            uDate_aqquired = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
+            uDate_acquired = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
 
-    if uDate_aqquired != '':
-        uDate_aqquired = 'date_aqquired=\'' + uDate_aqquired + '\','  
+    if uDate_acquired != '':
+        uDate_acquired = 'date_acquired=\'' + uDate_acquired + '\','  
 
-    setCommand = "SET " + uObjStatus + uCost + uDate_aqquired
+    setCommand = "SET " + uObjStatus + uCost + uDate_acquired
     if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]
     selecting = False
 
