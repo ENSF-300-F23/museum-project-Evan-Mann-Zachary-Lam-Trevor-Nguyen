@@ -22,9 +22,7 @@ CREATE TABLE ART_OBJECT (
     Object_type VARCHAR(9) NOT NULL,
     Artist_name VARCHAR(50),
     PRIMARY KEY (ID_no),
-    CONSTRAINT ARTOBJ CHECK (
-        Object_type IN ('Painting', 'Sculpture', 'Statue', 'Other')
-    ),
+    CONSTRAINT ARTOBJ CHECK (Object_type IN ('Painting', 'Sculpture', 'Statue', 'Other')),
     CONSTRAINT ARTCOL CHECK (Collection_type IN ('Borrowed', 'Permanent')),
     CONSTRAINT ARTFK FOREIGN KEY (Artist_name) REFERENCES ARTIST(Artist_name) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -67,7 +65,7 @@ CREATE TABLE PERMANENT_COLLECTION (
     Cost DECIMAL(10, 2),
     Date_acquired DATE,
     PRIMARY KEY (ID_no),
-    CONSTRAINT PERMOBJ CHECK (Collection_type IN ('Displayed', 'Stored', 'Loaned'))
+    CONSTRAINT PERMOBJ CHECK (Object_status IN ('Displayed', 'Stored', 'Loaned')),
     CONSTRAINT PERMFK FOREIGN KEY (ID_no) REFERENCES ART_OBJECT(ID_no) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE EXHIBITION (
