@@ -640,7 +640,7 @@ def editArtists(cur, actionType = None):
     if (actionType == "UPDATE"):
         tableName = 'Artist'
 
-        #display the current state of the art_object table before changes
+        #display the current state of the artist table before changes
         cur.execute("select * from artist;")
         print(200*'~')
         print("Artists before any changes")
@@ -763,10 +763,6 @@ def editArtists(cur, actionType = None):
         print()
 
 
-
-
-
-
 def editPermCollection(cur, actionType = None):
     tableName = 'permanent_collection'
 
@@ -851,7 +847,6 @@ def editPermCollection(cur, actionType = None):
     printData(cur.column_names, cur.fetchall())
     print(200*'~')
     print()
-
 
 
 def editBorrowCollection(cur, actionType = None):
@@ -971,11 +966,206 @@ def editExhibitions(cur, actionType = None):
 
 
     if (actionType == "INSERT"):
-        pass
+        tableName = 'exhibition'
+
+        #display the current state of the exhibition table before changes
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
+        #Getting the ID of the exhibition and checking that it isn't already exists in the database
+        selecting = True
+        while selecting:
+            EX_ID = input("Please input the ID of the exhibition you'd like to insert: ")
+            if EX_ID  in getCurExIDs(cur):
+                print("\nInvalid Input, Please input an exhibition ID that isn't already in the database\n")
+
+            elif len(EX_ID) != 5:
+                print("\nInvalid Input, Please input an exhibition ID that is exactly 5 characters long\n")
+            else:
+                selecting = False
+
+        start_Date = input('Please input the date the exhibition starts on (XXXX-XX-XX [year - month - day]): ')
+        selecting = True
+        while selecting:
+            if start_Date.replace('-', '').isnumeric() and start_Date[4] == '-' and start_Date[7] == '-' and len(start_Date) == 10 and int(start_Date[5:7]) <= 12 and int(start_Date[8:]) <=31:
+                selecting = False
+            else:
+                start_Date = input("Invalid date, please re enter the date when the exhibition starts (XXXX-XX-XX [year - month - day]): ") 
+        
+
+        end_Date = input('Please input the date the exhibition ends on (XXXX-XX-XX [year - month - day]): ')
+        selecting = True
+        while selecting:
+            if end_Date.replace('-', '').isnumeric() and end_Date[4] == '-' and end_Date[7] == '-' and len(end_Date) == 10 and int(end_Date[5:7]) <= 12 and int(end_Date[8:]) <=31:
+                selecting = False
+            else:
+                end_Date = input("Invalid date, please re enter the date when the exhibition ends (XXXX-XX-XX [year - month - day]): ") 
+
+
+
+        name = input('Please input the  name of the exhibition: ')
+
+        print()
+        exhibition_command = f"INSERT INTO EXHIBITION VALUES ('{EX_ID}','{start_Date}','{end_Date}','{name}');"
+        cur.execute(exhibition_command)
+
+
+        IDs_to_insert = {}
+        print("Please input the art object IDs that are present within this exhibition, it must have at least one.")
+        print("When you're finished inputting IDs just input nothing and the program will proceed")
+
+        cur.execute(f"select * from art_object;")
+        print(200*'~')
+        print(f"current list of art objects")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Art Object')
+        print(200*'~')
+        print()
+
+        #Getting the ID of the object and checking that it alreadys exist in the database
+        selecting = True
+        while selecting:
+            ID_no = input("Please input the ID number of the art object: ")
+            if ID_no == '':
+                selecting = False
+            elif ID_no not in getCurArtIDs(cur):
+                print("\nInvalid Input, Please input an ID of an art object that is already in the database\n")
+            elif ID_no in IDs_to_insert.keys():
+                print("Invalid input, please input an ID that isn't already in the exhibition, an art piece can't be shown twice")
+            else:
+                IDs_to_insert.update({ID_no : EX_ID})
+
+        for id in IDs_to_insert.keys():
+            cur.execute(f"INSERT INTO DISPLAYED_IN VALUES ('{EX_ID}','{id}');")
+
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
+
+        #Prompting the user on if they want to see the changes to the displayed in table they added to as well
+        showArtTypeChanges = input("Would you like to see the changes to displayed in as well? (Y or N): ")
+        while showArtTypeChanges not in ['Y','N']:  showArtTypeChanges = input('Invalid input. (Y or N): ')
+        if showArtTypeChanges == 'Y':
+            cur.execute(f"select * from displayed_in;")
+            print(200*'~')
+            print(f"displayed_in after inserts")
+            print()
+            printData(cur.column_names, cur.fetchall())
+            print(200*'~')
+
+            print()
+
     if (actionType == "UPDATE"):
-        pass
+        tableName = 'exhibition'
+
+        #display the current state of the exhibition table before changes
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
+        #Getting the ID of the exhibition and checking that it already exists in the database
+        selecting = True
+        while selecting:
+            EX_ID = input("Please input the ID of the exhibition you'd like to update the information of: ")
+            if EX_ID not in getCurExIDs(cur):
+                print("\nInvalid Input, Please input an exhibition ID that is already in the database\n")
+            else:
+                selecting = False
+
+        print()
+        print('-----------------------------------------------------------------------------------------------------------')
+        print('| at any point when inputting new values leave the space blank to leave the value as what it currently is |')
+        print('-----------------------------------------------------------------------------------------------------------')
+        print()
+
+        uStart_Date = input('Please input the new date the exhibition starts on (XXXX-XX-XX [year - month - day]): ')
+        selecting = True
+        if uStart_Date == '':
+            selecting = False
+        while selecting:
+            if uStart_Date.replace('-', '').isnumeric() and uStart_Date[4] == '-' and uStart_Date[7] == '-' and len(uStart_Date) == 10 and int(uStart_Date[5:7]) <= 12 and int(uStart_Date[8:]) <=31:
+                selecting = False
+            else:
+                uStart_Date = input("Invalid date, please re enter the date when the exhibition starts (XXXX-XX-XX [year - month - day]): ")
+        if uStart_Date != '':
+            uStart_Date = 'start_date=\'' + uStart_Date + '\','  
+        
+
+        uEnd_Date = input('Please input the new date the exhibition ends on (XXXX-XX-XX [year - month - day]): ')
+        selecting = True
+        if uEnd_Date == '':
+            selecting = False
+        while selecting:
+            if uEnd_Date.replace('-', '').isnumeric() and uEnd_Date[4] == '-' and uEnd_Date[7] == '-' and len(uEnd_Date) == 10 and int(uEnd_Date[5:7]) <= 12 and int(uEnd_Date[8:]) <=31:
+                selecting = False
+            else:
+                uEnd_Date = input("Invalid date, please re enter the date when the exhibition ends (XXXX-XX-XX [year - month - day]): ")
+        if uEnd_Date != '':
+            uEnd_Date = 'end_date=\'' + uEnd_Date + '\','   
+
+
+
+        uName = input('Please input the new name of the exhibition: ')
+        if uName != '':
+            uName = 'ex_name=\'' + uName + '\','  
+
+        print()
+        setCommand = "SET " + uStart_Date + uEnd_Date + uName
+        if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1] 
+        cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE EX_ID = \'" + EX_ID + '\';')
+
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
+
     if (actionType == "DELETE"):
-        pass
+        tableName = 'Exhibition'
+        #display the current state of the exhibition table table before changes
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
+
+        #Getting the ID of the exhibition and checking that it already exists in the database
+        selecting = True
+        while selecting:
+            EX_ID = input("Please input the name of the exhibition that you would like to delete the information of: ")
+            if EX_ID not in getCurExIDs(cur):
+                print("\nInvalid Input, Please input an ID of an exhibition that is already in the database\n")
+            else:
+                selecting = False
+
+        print()
+        print('Exhibition deleted')
+        print()
+
+        cur.execute(f"DELETE FROM {tableName} WHERE EX_ID = \'" + EX_ID + '\';')
+
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
 
 
 def editSepCollections(cur, actionType = None):
