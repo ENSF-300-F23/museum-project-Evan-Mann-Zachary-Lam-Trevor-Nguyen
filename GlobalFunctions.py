@@ -56,7 +56,7 @@ def getCurCollectionIDs(cur):
 def printData(header, data, type = 'basic'):
     if type == 'Art Object':
 
-        header_size=len(header)
+
         print(f"{str(header[0]):<11s}{str(header[1]):<13s}{str(header[2]):<40s}{str(header[3]):<40s}{str(header[4]):<15s}{str(header[5]):<15s}{str(header[6]):<17s}{str(header[7]):<15s}{str(header[8]):<30s}",end='')
         print()
         print(200*'-')
@@ -66,13 +66,23 @@ def printData(header, data, type = 'basic'):
     
 
     elif type == 'Artist':
-        header_size=len(header)
+
         print(f"{str(header[0]):<30s}{str(header[1]):<13s}{str(header[2]):<13s}{str(header[3]):<20s}{str(header[4]):<15s}{str(header[5]):<20s}{str(header[6]):<40s}",end='')
         print()
         print(200*'-')
         for row in data:
             print(f"{str(row[0]):<30s}{str(row[1]):<13s}{str(row[2]):<13s}{str(row[3]):<20s}{str(row[4]):<15s}{str(row[5]):<20s}{str(row[6]):<40s}",end='')
             print()
+
+
+    elif type == 'Collection':
+        print(f"{str(header[0]):<30s}{str(header[1]):<20s}{str(header[2]):<60s}{str(header[3]):<45s}{str(header[4]):<15s}{str(header[5]):<15s}{str(header[6]):<15s}",end='')
+        print()
+        print(200*'-')
+        for row in data:
+            print(f"{str(row[0]):<30s}{str(row[1]):<20s}{str(row[2]):<60s}{str(row[3]):<45s}{str(row[4]):<15s}{str(row[5]):<15s}{str(row[6]):<15s}",end='')
+            print()
+
 
     else:
         header_size=len(header)

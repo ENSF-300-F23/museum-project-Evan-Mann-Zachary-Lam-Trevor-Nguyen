@@ -691,7 +691,7 @@ def editArtists(cur, actionType = None):
 
 
     if (actionType == "INSERT"):
-        #display the current state of the art_object table before changes
+        #display the current state of the artist table before changes
         cur.execute("select * from artist;")
         print(200*'~')
         print("Artists before any changes")
@@ -699,7 +699,7 @@ def editArtists(cur, actionType = None):
         printData(cur.column_names, cur.fetchall(), 'Artist')
         print(200*'~')
         print()
-        #Getting the ID of the object and checking that it doesn't already exist in the database
+        #Getting the name of the artist and checking that it doesn't already exist in the database
         selecting = True
         while selecting:
             name = input("Please input the name of the artist: ")
@@ -1363,11 +1363,161 @@ def editSepCollections(cur, actionType = None):
 
 
     if (actionType == "INSERT"):
-        pass
+        tableName = 'collection'
+        print()
+        #display the current state of the collection table before changes
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print("Collection before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Collection')
+        print(200*'~')
+        print()
+        #Getting the name of the collection and checking that it doesn't already exist in the database
+        selecting = True
+        while selecting:
+            c_name = input("Please input the name of the collection: ")
+            if c_name in getCurCollectionIDs(cur):
+                print("\nInvalid Input, Please input an collection name that is not already in the database\n")
+            elif len(c_name) > 30:
+                print("Invalid input. Please input a name 30 characters or shorter")
+            else:
+                selecting = False
+
+        c_type = input('Please input the type of the collection, must be 20 characters or less: ')
+        while len(c_type) > 20: c_type = input("Invalid input, please keep your input under 20 characters: ")
+        descr = input("Please input the description of the collection, must be less than 60 characters: ")
+        while len(descr) > 60: descr = input("Invalid input, please keep your description under 60 characters: ")
+        address = input("Please input the address of the collection, must be 45 characters or less: ")
+        while len(address) > 45: address = input("Invalid input, please keep your address under 45 characters: ")
+        phone = input("Please input the phone number for the collection (all digits no spaces, dashes or brackets): ")
+        while not phone.isnumeric() or len(phone) > 15: phone = input("Invalid input, please only input digits and have your input be under 15 digits: ")
+        cp_firstName = input("Please input the first name of the contact person for the collection, must be 15 characters or less: ")
+        while len(cp_firstName) > 15: cp_firstName = input("Invalid input, must be less than 15 characters: ")
+        cp_lastName = input("Please input the last name of the contact person for the collection, must be 15 characters or less: ")
+        while len(cp_lastName) > 15: cp_lastName = input("Invalid input, must be less than 15 characters: ")
+
+        print()
+        art_obj_command = f"INSERT INTO COLLECTION VALUES ('{c_name}','{c_type}','{descr}','{address}','{phone}','{cp_firstName}','{cp_lastName}');"
+
+        cur.execute(art_obj_command)
+
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print("Collection after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Collection')
+        print(200*'~')
+        print()
+
     if (actionType == "UPDATE"):
-        pass
+        tableName = 'collection'
+        print()
+        #display the current state of the collection table before changes
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print("Collection before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Collection')
+        print(200*'~')
+
+        print()
+        print('-----------------------------------------------------------------------------------------------------------')
+        print('| at any point when inputting new values leave the space blank to leave the value as what it currently is |')
+        print('-----------------------------------------------------------------------------------------------------------')
+        print()
+
+        #Getting the name of the collection and checking that it doesn't already exist in the database
+        selecting = True
+        while selecting:
+            c_name = input("Please input the name of the collection: ")
+            if c_name not in getCurCollectionIDs(cur):
+                print("\nInvalid Input, Please input an collection name that is already in the database\n")
+            else:
+                selecting = False
+
+        uC_type = input('Please input the new type of the collection, must be 20 characters or less: ')
+        while len(uC_type) > 20 and uC_type != '': uC_type = input("Invalid input, please keep your input under 20 characters: ")
+        if uC_type != '':
+            uC_type = 'c_type=\'' + uC_type + '\',' 
+
+        uDescr = input("Please input the new description of the collection, must be less than 60 characters: ")
+        while len(uDescr) > 60 and uDescr != '': uDescr = input("Invalid input, please keep your description under 60 characters: ")
+        if uDescr != '':
+            uDescr = 'descr=\'' + uDescr + '\',' 
+        
+        uAddress = input("Please input the new address of the collection, must be 45 characters or less: ")
+        while len(uAddress) > 45 and uAddress != '': uAddress = input("Invalid input, please keep your address under 45 characters: ")
+        if uAddress != '':
+            uAddress = 'address=\'' + uAddress + '\',' 
+
+        uPhone = input("Please input the new phone number for the collection (all digits no spaces, dashes or brackets): ")
+        while (not uPhone.isnumeric() or len(uPhone) > 15) and uPhone != '': uPhone = input("Invalid input, please only input digits and have your input be under 15 digits: ")
+        if uPhone != '':
+            uPhone = 'phone=\'' + uPhone + '\',' 
+
+        uCp_firstName = input("Please input the new first name of the contact person for the collection, must be 15 characters or less: ")
+        while len(uCp_firstName) > 15 and uCp_firstName != '': uCp_firstName = input("Invalid input, must be less than 15 characters: ")
+        if uCp_firstName != '':
+            uCp_firstName = 'cp_first_name=\'' + uCp_firstName + '\',' 
+        
+        uCp_lastName = input("Please input the new last name of the contact person for the collection, must be 15 characters or less: ")
+        while len(uCp_lastName) > 15 and uCp_lastName != '': uCp_lastName = input("Invalid input, must be less than 15 characters: ")
+        if uCp_lastName != '':
+            uCp_lastName = 'cp_last_name=\'' + uCp_lastName + '\',' 
+
+        
+        print()
+        setCommand = "SET " + uC_type + uDescr + uAddress + uPhone + uCp_firstName + uCp_lastName
+        if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1] 
+
+        if setCommand == 'SET ':
+            print('No changes were made')
+            return
+
+        cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE c_name = \'" + c_name + '\';')
+
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print("Collection after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Collection')
+        print(200*'~')
+        print()
+        
     if (actionType == "DELETE"):
-        pass
+        tableName = 'collection'
+        #display the current state of the collection table before changes
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print("Collection before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Collection')
+        print(200*'~')
+        print()
+
+        #Getting the name of the collection and checking that it doesn't already exist in the database
+        selecting = True
+        while selecting:
+            c_name = input("Please input the name of the collection: ")
+            if c_name not in getCurCollectionIDs(cur):
+                print("\nInvalid Input, Please input an collection name that is already in the database\n")
+            else:
+                selecting = False
+
+        print()
+        print('Collection deleted')
+        print()
+
+        cur.execute(f"DELETE FROM COLLECTION WHERE c_name = \'" + c_name + '\'')
+
+        cur.execute("select * from collection;")
+        print(200*'~')
+        print("Collection after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall(), 'Collection')
+        print(200*'~')
+        print()
 
 
 
