@@ -118,7 +118,7 @@ def editArtObj(cur, actionType = None):
             while selecting:
                 #Input the collection ID
                 collectionBorrowedFrom = input("Please input the collection the piece was borrowed from: ")
-                if collectionBorrowedFrom not in getCurCollectionIDs(cur) and Artist_name != 'None':
+                if collectionBorrowedFrom not in getCurCollectionIDs(cur):
                     print("\nInvalid Input, Please input a collection ID that is already in the database\n")
                 else:
                     selecting = False
@@ -140,6 +140,10 @@ def editArtObj(cur, actionType = None):
             if dateReturned == 'None':
                 selecting = False
             while selecting:
+                if dateReturned == 'None':
+                    selecting = False
+                    break
+
                 if len(dateReturned) == 10:
                     if dateReturned.replace('-', '').isnumeric() and dateReturned[4] == '-' and dateReturned[7] == '-' and  int(dateReturned[5:7]) <= 12 and int(dateReturned[8:]) <=31:
                         selecting = False
