@@ -5,9 +5,18 @@
 - evan.mann@ucalgary.ca Evan Mann (30141069): Relational schema, admin interface, data entry interface
 - trevor.nguyen@ucalgary.ca Trevor Nguyen (30176877): Query code, browsing interface
 ## How to Use & Run the Program:
-- modify this file to include any notes on how to use and run the program
+- Run DatabaseCreation.py
+- Enter your username and password
+- Select your user type
+- If you are a data entry user:
+    - Choose the table you would like to modify
+    - Choose which modification you would like to make
+    - Enter required information as prompted
+    - Continue to modify the database by choosing another table or exit
+- If you are a guest user:
+    - 
 ## Bonus Features:
-- include any features you have added beyond the minimum requirements in a features list
+- Data entry user
 
 ## Organization:
 - code folder: contains your main python application code
