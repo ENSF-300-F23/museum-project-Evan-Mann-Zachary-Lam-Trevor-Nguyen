@@ -577,7 +577,7 @@ INSERT INTO COLLECTION
 VALUES (
         'Masterpieces of the Louvre',
         'Museum',
-        'Artworks essential to history and the history of art, masterpieces bear witness to the wealth of the Louvre’s collections and the wide range of artistic practices used around the world and through the ages.',
+        'Artworks essential to history and the history of art',
         '123 Rue de la Galerie
 Paris, France',
         '33123456789',
@@ -587,7 +587,7 @@ Paris, France',
     (
         'National Museums Recovery',
         'Museum',
-        'Artworks retrieved in Germany and brought back to France after World War II.',
+        'Artworks retrieved in Germany after World War II.',
         '789 Avenue de la Restitution
 Paris, France',
         '33198765432',

@@ -947,7 +947,6 @@ def editBorrowCollection(cur, actionType = None):
     print()
 
 
-
 def editExhibitions(cur, actionType = None):
     #Asking the user what kind of action they would like to do on the art object tables
     print("What kind of action would you like to do")
