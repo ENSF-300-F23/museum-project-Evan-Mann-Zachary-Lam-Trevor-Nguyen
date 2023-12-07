@@ -180,8 +180,27 @@ def editArtObj(cur, actionType = None):
                 #Inputs for a statue object
                 objType = "Statue"
                 material = input("Please input the material the statue is made out of: ")
+                
+                selecting = True
                 height = input("Please input the height of the statue: ")
+                while selecting:
+                    selecting = False
+                    try:    
+                        val = float(height) 
+                    except ValueError:  
+                        selecting = True  
+                        height = input("Invalid input, please input a decimal number: ")
+
+                selecting = True
                 weight = input("Please input the weight of the statue: ")
+                while selecting:
+                    selecting = False
+                    try:
+                        val = float(weight)
+                    except ValueError:
+                        selecting = True
+                        weight = input("Invalid input, please input a decimal number: ")
+
                 style = input("Please input the style of the statue: ")
 
                 #Insert command creation for the object type
@@ -192,8 +211,27 @@ def editArtObj(cur, actionType = None):
                 #Inputs for a sculpture object
                 objType = "Sculpture"
                 material = input("Please input the material the sculpture is made out of: ")
+
+                selecting = True
                 height = input("Please input the height of the sculpture: ")
+                while selecting:
+                    selecting = False
+                    try:    
+                        val = float(height) 
+                    except ValueError:  
+                        selecting = True  
+                        height = input("Invalid input, please input a decimal number: ")
+
+                selecting = True
                 weight = input("Please input the weight of the sculpture: ")
+                while selecting:
+                    selecting = False
+                    try:
+                        val = float(weight)
+                    except ValueError:
+                        selecting = True
+                        weight = input("Invalid input, please input a decimal number: ")
+
                 style = input("Please input the style of the sculpture: ")
 
                 #Insert command creation for the object type
@@ -263,7 +301,7 @@ def editArtObj(cur, actionType = None):
         #Prompting the user if they want to see the changes to the specific collection type table they added to as wel
         showCollectionTypeChanges = input(f"{Collection_type} collection has had an insert as well, would you like to see those changes? (Y or N): ")
         while showCollectionTypeChanges not in ['Y','N']:  showCollectionTypeChanges = input('Invalid input. (Y or N): ')
-        if showArtTypeChanges == 'Y':
+        if showCollectionTypeChanges == 'Y':
 
             c = 'PERMANENT_COLLECTION' if Collection_type == 'permanent' else 'BORROWED'
 
@@ -434,10 +472,39 @@ def editArtObj(cur, actionType = None):
                     uMaterial = 'material=\'' + uMaterial + '\','
 
                 uHeight = input("Please input the new height of the statue: ")
+                selecting = True
+                if uHeight == '':
+                    selecting = False
+                while selecting:
+                    if uHeight == '':
+                        selecting = False
+                        break
+                    selecting = False
+                    try:    
+                        val = float(uHeight) 
+                    except ValueError:  
+                        selecting = True  
+                        uHeight = input("Invalid input, please input a decimal number: ")   
+
                 if uHeight != '':
                     uHeight = 'height_cm=\'' + uHeight + '\','
 
                 uWeight = input("Please input the new weight of the statue: ")
+                selecting = True
+                if uWeight == '':
+                    selecting = False
+                while selecting:
+                    if uWeight == '':
+                        selecting = False
+                        break
+                    selecting = False
+                    try:
+                        val = float(uWeight)
+                    except ValueError:
+                        selecting = True
+                        uWeight = input("Invalid input, please input a decimal number: ") 
+
+
                 if uWeight != '':
                     uWeight = 'weight_kg=\'' + uWeight + '\','
 
@@ -476,10 +543,38 @@ def editArtObj(cur, actionType = None):
                     uMaterial = 'material=\'' + uMaterial + '\','
 
                 uHeight = input("Please input the new height of the sculpture: ")
+                selecting = True
+                if uHeight == '':
+                    selecting = False
+                while selecting:
+                    if uHeight == '':
+                        selecting = False
+                        break
+                    selecting = False
+                    try:    
+                        val = float(uHeight) 
+                    except ValueError:  
+                        selecting = True  
+                        uHeight = input("Invalid input, please input a decimal number: ")   
+
                 if uHeight != '':
-                    uDruHeightawn_on = 'height_cm=\'' + uHeight + '\','
+                    uHeight = 'height_cm=\'' + uHeight + '\','
 
                 uWeight = input("Please input the new weight of the sculpture: ")
+                selecting = True
+                if uWeight == '':
+                    selecting = False
+                while selecting:
+                    if uWeight == '':
+                        selecting = False
+                        break
+                    selecting = False
+                    try:
+                        val = float(uWeight)
+                    except ValueError:
+                        selecting = True
+                        uWeight = input("Invalid input, please input a decimal number: ") 
+
                 if uWeight != '':
                     uWeight = 'weight_kg=\'' + uWeight + '\','
 
