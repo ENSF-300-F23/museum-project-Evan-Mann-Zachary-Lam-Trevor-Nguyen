@@ -314,7 +314,7 @@ def editArtObj(cur, actionType = None):
                 uYear = input("Please input the year the art object was created: ")
                 while len(uYear) != 4 and uYear != '': uYear = input("Invalid Input. Year must be 4 digits. Please input a new year: ")
                 if uYear != '':
-                    uYear = 'Year=\'' + uYear + '\','
+                    uYear = 'Year_created=\'' + uYear + '\','
 
 
                 #Input the title and check its length
