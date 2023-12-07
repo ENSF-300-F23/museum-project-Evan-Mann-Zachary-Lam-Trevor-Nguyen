@@ -1,4 +1,5 @@
 import mysql.connector
+import csv
 from GlobalFunctions import *
 from GuestUserFunctions import *
 from AdminUserFunctions import *
@@ -31,6 +32,101 @@ def editArtObj(cur, actionType = None):
         print()
         printData(cur.column_names, cur.fetchall(), 'Art Object')
         print(200*'~')
+        print()
+        insert_method = input('Would you like to insert from a csv file? (Y or N): ')
+        while insert_method not in ['Y','N']:  insert_method = input('Invalid input. (Y or N): ')
+        if insert_method == 'Y':
+            file = input("Enter the text file name (must be in the same directory as this program): ")
+
+            with open(file, 'r') as f:
+                lines = f.readlines()
+                ID_no = lines[0].strip() if len(lines) > 0 else None
+                Year_created = lines[1].strip() if len(lines) > 1 else None
+                Title = lines[2].strip() if len(lines) > 2 else None
+                Descr = lines[3].strip() if len(lines) > 3 else None
+                Origin = lines[4].strip() if len(lines) > 4 else None
+                Epoch = lines[5].strip() if len(lines) > 5 else None
+                Collection_type = lines[6].strip() if len(lines) > 6 else None
+                objType = lines[7].strip() if len(lines) > 7 else None
+                Artist_name = lines[8].strip() if len(lines) > 8 else None
+                art_obj_command = f"INSERT INTO ART_OBJECT VALUES ('{ID_no}','{Year_created}','{Title}','{Descr}','{Origin}','{Epoch}','{Collection_type}','{objType}','{Artist_name}');"
+
+                
+                if Collection_type == 'Permanent':
+                    objStatus = lines[9].strip() if len(lines) > 9 else None
+                    cost = lines[10].strip() if len(lines) > 10 else None
+                    dateAqquired = lines[11].strip() if len(lines) > 11 else None
+                    ternaryCommand = f"INSERT INTO PERMANENT_COLLECTION VALUES ('{ID_no}','{objStatus}','{cost}','{dateAqquired}');"
+                elif Collection_type == 'Borrowed':
+                    collectionBorrowedFrom = lines[9].strip() if len(lines) > 9 else None
+                    dateBorrowed = lines[10].strip() if len(lines) > 10 else None
+                    dateReturned = lines[11].strip() if len(lines) > 11 else None
+                    ternaryCommand = f"INSERT INTO BORROWED VALUES ('{ID_no}','{collectionBorrowedFrom}','{dateBorrowed}','{dateReturned}');"
+
+                if objType =='Painting':
+                    paint_type = lines[12].strip() if len(lines) > 12 else None
+                    Drawn_on = lines[13].strip() if len(lines) > 13 else None
+                    style = lines[14].strip() if len(lines) > 14 else None
+                    secondary_Command = f"INSERT INTO PAINTING VALUES ('{ID_no}','{paint_type}','{Drawn_on}','{style}');"
+                elif objType =='Statue':
+                    material = lines[12].strip() if len(lines) > 12 else None
+                    height = lines[13].strip() if len(lines) > 13 else None
+                    weight = lines[14].strip() if len(lines) > 14 else None
+                    style = lines[15].strip() if len(lines) > 15 else None
+                    secondary_Command = f"INSERT INTO STATUE VALUES ('{ID_no}','{material}','{height}','{weight}','{style}');"
+                elif objType =='Sculpture':
+                    material = lines[12].strip() if len(lines) > 12 else None
+                    height = lines[13].strip() if len(lines) > 13 else None
+                    weight = lines[14].strip() if len(lines) > 14 else None
+                    style = lines[15].strip() if len(lines) > 15 else None
+                    secondary_Command = f"INSERT INTO SCULPTURE VALUES ('{ID_no}','{material}','{height}','{weight}','{style}');"
+                elif objType =='Other':
+                    other_type = lines[12].strip() if len(lines) > 12 else None
+                    style = lines[13].strip() if len(lines) > 13 else None
+                    secondary_Command = f"INSERT INTO OTHER VALUES ('{ID_no}','{other_type}','{style}');"
+
+                cur.execute(art_obj_command)
+                cur.execute(secondary_Command)
+                cur.execute(ternaryCommand)
+
+                cur.execute("select * from art_object;")
+            print(200*'~')
+            print("Art Objects after insert")
+            print()
+            printData(cur.column_names, cur.fetchall(), 'Art Object')
+            print(200*'~')
+
+            print()
+
+            #Prompting the user on if they want to see the changes to the specific object type table they added to as well
+            showArtTypeChanges = input(f"{objType} has had an insert as well, would you like to see those changes? (Y or N): ")
+            while showArtTypeChanges not in ['Y','N']:  showArtTypeChanges = input('Invalid input. (Y or N): ')
+            if showArtTypeChanges == 'Y':
+                cur.execute(f"select * from {objType};")
+                print(200*'~')
+                print(f"{objType} after insert")
+                print()
+                printData(cur.column_names, cur.fetchall())
+                print(200*'~')
+
+                print()
+
+            #Prompting the user if they want to see the changes to the specific collection type table they added to as wel
+            showCollectionTypeChanges = input(f"{Collection_type} collection has had an insert as well, would you like to see those changes? (Y or N): ")
+            while showCollectionTypeChanges not in ['Y','N']:  showCollectionTypeChanges = input('Invalid input. (Y or N): ')
+            if showCollectionTypeChanges == 'Y':
+
+                c = 'PERMANENT_COLLECTION' if Collection_type == 'Permanent' else 'BORROWED'
+
+                cur.execute(f"select * from {c};")
+                print(200*'~')
+                print(f"{c} after insert")
+                print()
+                printData(cur.column_names, cur.fetchall())
+                print(200*'~')
+
+                print()
+                return
 
         #Getting the ID of the object and checking that it doesn't already exist in the database
         selecting = True
@@ -303,7 +399,7 @@ def editArtObj(cur, actionType = None):
         while showCollectionTypeChanges not in ['Y','N']:  showCollectionTypeChanges = input('Invalid input. (Y or N): ')
         if showCollectionTypeChanges == 'Y':
 
-            c = 'PERMANENT_COLLECTION' if Collection_type == 'permanent' else 'BORROWED'
+            c = 'PERMANENT_COLLECTION' if Collection_type == 'Permanent' else 'BORROWED'
 
             cur.execute(f"select * from {c};")
             print(200*'~')
@@ -1509,6 +1605,7 @@ def editSepCollections(cur, actionType = None):
         print('Collection deleted')
         print()
 
+
         cur.execute(f"DELETE FROM COLLECTION WHERE c_name = \'" + c_name + '\'')
 
         cur.execute("select * from collection;")
@@ -1546,6 +1643,7 @@ def editDisplayedIn(cur, actionType = None):
         printData(cur.column_names, cur.fetchall())
         print(200*'~')
         print()
+
 
 
 #Data entry console
