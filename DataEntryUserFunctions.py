@@ -76,7 +76,14 @@ def editArtObj(cur, actionType = None):
         #pointing back to the Art object must be created. This code block walks the user through that process similarly to
         #What they had been doing up until this point
         if Collection_type == 'permanent':
-            objStatus = input("Please input the status of the object: ")    #Input the status of the object
+            #Inputting a new object status
+            selecting = True
+            while selecting:
+                objStatus = input("Please input the status of the object (Displayed, Stored, Loaned): ")
+                if objStatus not in ('Displayed', 'Stored', 'Loaned'):
+                    print("Invalid input, please input Displayed, Stored or Loaned")
+                else:
+                    selecting = False
             
             selecting = True
             cost = input("Please input the cost of the art object: ")
@@ -800,7 +807,17 @@ def editPermCollection(cur, actionType = None):
             selecting = False
 
     #Inputting a new object status
-    uObjStatus = input("Please input the new status of the object: ")
+    selecting = True
+    while selecting:
+        uObjStatus = input("Please input the new status of the object (Displayed, Stored, Loaned): ")
+        if uObjStatus not in ('Displayed', 'Stored', 'Loaned'):
+            if uObjStatus == '':
+                selecting = False
+            else:
+                print("Invalid input, please input Displayed, Stored or Loaned")
+        else:
+            selecting = False
+            
     if uObjStatus != '':
         uObjStatus = 'object_status=\'' + uObjStatus + '\','
 
