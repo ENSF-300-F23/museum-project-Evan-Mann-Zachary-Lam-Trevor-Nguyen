@@ -623,6 +623,10 @@ def editArtObj(cur, actionType = None):
                 print("Invalid input")
                 print()
 
+        if setCommand == 'SET ':
+            print('No changes were made')
+            return
+
         print()
         cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE ID_no = " + ID_no + ';')
 
@@ -843,6 +847,11 @@ def editArtists(cur, actionType = None):
         print()
         setCommand = "SET " + uDate_born + uDate_died + uCountry_of_origin + uEpoch + uMain_style + uDescr
         if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1] 
+
+        if setCommand == 'SET ':
+            print('No changes were made')
+            return
+
         cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE artist_name = \'" + name + '\';')
 
         cur.execute("select * from artist;")
@@ -977,6 +986,10 @@ def editPermCollection(cur, actionType = None):
     if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]
     selecting = False
 
+    if setCommand == 'SET ':
+        print('No changes were made')
+        return
+
     cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE ID_no = " + ID_no + ';')
 
     cur.execute(f"select * from {tableName};")
@@ -1080,6 +1093,9 @@ def editBorrowCollection(cur, actionType = None):
     setCommand = "SET " + uCollection + uDate_borrowed + uDate_Returned
     if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]
 
+    if setCommand == 'SET ':
+        print('No changes were made')
+        return
 
     cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE ID_no = " + ID_no + ';')
 
@@ -1279,6 +1295,11 @@ def editExhibitions(cur, actionType = None):
         print()
         setCommand = "SET " + uStart_Date + uEnd_Date + uName
         if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1] 
+
+        if setCommand == 'SET ':
+            print('No changes were made')
+            return  
+
         cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE EX_ID = \'" + EX_ID + '\';')
 
         cur.execute(f"select * from {tableName};")
