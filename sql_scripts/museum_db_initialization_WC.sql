@@ -459,7 +459,7 @@ VALUES (
     (
         '556140261',
         '1810',
-        'Napoléon en Mars pacificateur',
+        'Napoleon en Mars pacificateur',
         'Statue of Napoleon',
         'French',
         'Napoleonic',
