@@ -66,16 +66,16 @@ def editArtObj(cur, actionType = None):
         #Input the collection and make sure it is either permanent or borrowed
         selecting = True
         while selecting:
-            Collection_type = input("Please input the collection type that the object resides in (borrowed or permanent): ")
-            if Collection_type not in ['borrowed', 'permanent']:
-                print("\nInvalid Input, Please input choice exactly as shown\n")
+            Collection_type = input("Please input the collection type that the object resides in (Borrowed or Permanent): ")
+            if Collection_type not in ['Borrowed', 'Permanent']:
+                print("\nInvalid input, please input choice exactly as shown\n")
             else:
                 selecting = False
         
         #If the art object belongs to the permanent collection a new entry within that table must be created with a foreign key
         #pointing back to the Art object must be created. This code block walks the user through that process similarly to
         #What they had been doing up until this point
-        if Collection_type == 'permanent':
+        if Collection_type == 'Permanent':
             #Inputting a new object status
             selecting = True
             while selecting:
@@ -382,9 +382,9 @@ def editArtObj(cur, actionType = None):
 
                 selecting = True
                 while selecting:
-                    uCollection_type = input("Please input the collection type that the object resides in (borrowed or permanent): ")
-                    if uCollection_type not in ['borrowed', 'permanent', '']:
-                        print("\nInvalid Input, Please input choice exactly as shown\n")
+                    uCollection_type = input("Please input the collection type that the object resides in (Borrowed or Permanent): ")
+                    if uCollection_type not in ['Borrowed', 'Permanent', '']:
+                        print("\nInvalid input, please input choice exactly as shown\n")
                     else:
                         selecting = False
                 if uCollection_type !='':
