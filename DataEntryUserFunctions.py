@@ -112,7 +112,7 @@ def editArtObj(cur, actionType = None):
             ternaryCommand = f"INSERT INTO PERMANENT_COLLECTION VALUES ('{ID_no}','{objStatus}','{cost}','{dateAqquired}');"
 
         #Same code as permanent collection but for the borrowed collections, it involes inputting the collectio ID as well which is checked for duplicates
-        if Collection_type == 'borrowed':
+        if Collection_type == 'Borrowed':
             
             selecting = True
             while selecting:
