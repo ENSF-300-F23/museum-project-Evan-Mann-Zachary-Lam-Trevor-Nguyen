@@ -1,11 +1,12 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/M_swVJkI)
 # Museum-Project
-## To Do list:
-- modify this file to include your group members information and tasks assigned per each
-Zachary Lam (B02): EERD, database creation
-Evan Mann (B02): Relational schema, admin interface, data entry interface
-Trevor Nguyen (B02): Query code, browsing interface
+## Group Member Information & Assigned Tasks:
+- zachary.lam@ucalgary.ca Zachary Lam (30178786): EERD, database creation
+- evan.mann@ucalgary.ca Evan Mann (30141069): Relational schema, admin interface, data entry interface
+- trevor.nguyen@ucalgary.ca Trevor Nguyen (30176877): Query code, browsing interface
+## How to Use & Run the Program:
 - modify this file to include any notes on how to use and run the program
+## Bonus Features:
 - include any features you have added beyond the minimum requirements in a features list
 
 ## Organization:
