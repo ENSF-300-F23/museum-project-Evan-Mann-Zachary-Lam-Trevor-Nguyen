@@ -13,7 +13,9 @@
     - Enter required information as prompted
     - Continue to modify the database by choosing another table or exit
 - If you are a guest user:
-    - 
+    - Choose the part of the database that you would like to view: Art pieces, Artists, Exhibitions or Exit Program as desired
+    - Follow the prompts and choose the parts of each database you would like to get more information on
+    - After the table is shown, you can continue searching or end the code by going up a level and then exiting the program.
 ## Bonus Features:
 - Data entry user
 
