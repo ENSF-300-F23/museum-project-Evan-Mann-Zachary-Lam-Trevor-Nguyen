@@ -40,49 +40,52 @@ def editArtObj(cur, actionType = None):
 
             with open(file, 'r') as f:
                 lines = f.readlines()
-                ID_no = lines[0].strip() if len(lines) > 0 else None
-                Year_created = lines[1].strip() if len(lines) > 1 else None
-                Title = lines[2].strip() if len(lines) > 2 else None
-                Descr = lines[3].strip() if len(lines) > 3 else None
-                Origin = lines[4].strip() if len(lines) > 4 else None
-                Epoch = lines[5].strip() if len(lines) > 5 else None
-                Collection_type = lines[6].strip() if len(lines) > 6 else None
-                objType = lines[7].strip() if len(lines) > 7 else None
-                Artist_name = lines[8].strip() if len(lines) > 8 else None
+            for line in lines:
+                attributes = line.strip().split(',')
+                
+                ID_no = attributes[0].strip() if len(attributes) > 0 else None
+                Year_created = attributes[1].strip() if len(attributes) > 1 else None
+                Title = attributes[2].strip() if len(attributes) > 2 else None
+                Descr = attributes[3].strip() if len(attributes) > 3 else None
+                Origin = attributes[4].strip() if len(attributes) > 4 else None
+                Epoch = attributes[5].strip() if len(attributes) > 5 else None
+                Collection_type = attributes[6].strip() if len(attributes) > 6 else None
+                objType = attributes[7].strip() if len(attributes) > 7 else None
+                Artist_name = attributes[8].strip() if len(attributes) > 8 else None
                 art_obj_command = f"INSERT INTO ART_OBJECT VALUES ('{ID_no}','{Year_created}','{Title}','{Descr}','{Origin}','{Epoch}','{Collection_type}','{objType}','{Artist_name}');"
 
                 
                 if Collection_type == 'Permanent':
-                    objStatus = lines[9].strip() if len(lines) > 9 else None
-                    cost = lines[10].strip() if len(lines) > 10 else None
-                    dateAqquired = lines[11].strip() if len(lines) > 11 else None
+                    objStatus = attributes[9].strip() if len(attributes) > 9 else None
+                    cost = attributes[10].strip() if len(attributes) > 10 else None
+                    dateAqquired = attributes[11].strip() if len(attributes) > 11 else None
                     ternaryCommand = f"INSERT INTO PERMANENT_COLLECTION VALUES ('{ID_no}','{objStatus}','{cost}','{dateAqquired}');"
                 elif Collection_type == 'Borrowed':
-                    collectionBorrowedFrom = lines[9].strip() if len(lines) > 9 else None
-                    dateBorrowed = lines[10].strip() if len(lines) > 10 else None
-                    dateReturned = lines[11].strip() if len(lines) > 11 else None
+                    collectionBorrowedFrom = attributes[9].strip() if len(attributes) > 9 else None
+                    dateBorrowed = attributes[10].strip() if len(attributes) > 10 else None
+                    dateReturned = attributes[11].strip() if len(attributes) > 11 else None
                     ternaryCommand = f"INSERT INTO BORROWED VALUES ('{ID_no}','{collectionBorrowedFrom}','{dateBorrowed}','{dateReturned}');"
 
                 if objType =='Painting':
-                    paint_type = lines[12].strip() if len(lines) > 12 else None
-                    Drawn_on = lines[13].strip() if len(lines) > 13 else None
-                    style = lines[14].strip() if len(lines) > 14 else None
+                    paint_type = attributes[12].strip() if len(attributes) > 12 else None
+                    Drawn_on = attributes[13].strip() if len(attributes) > 13 else None
+                    style = attributes[14].strip() if len(attributes) > 14 else None
                     secondary_Command = f"INSERT INTO PAINTING VALUES ('{ID_no}','{paint_type}','{Drawn_on}','{style}');"
                 elif objType =='Statue':
-                    material = lines[12].strip() if len(lines) > 12 else None
-                    height = lines[13].strip() if len(lines) > 13 else None
-                    weight = lines[14].strip() if len(lines) > 14 else None
-                    style = lines[15].strip() if len(lines) > 15 else None
+                    material = attributes[12].strip() if len(attributes) > 12 else None
+                    height = attributes[13].strip() if len(attributes) > 13 else None
+                    weight = attributes[14].strip() if len(attributes) > 14 else None
+                    style = attributes[15].strip() if len(attributes) > 15 else None
                     secondary_Command = f"INSERT INTO STATUE VALUES ('{ID_no}','{material}','{height}','{weight}','{style}');"
                 elif objType =='Sculpture':
-                    material = lines[12].strip() if len(lines) > 12 else None
-                    height = lines[13].strip() if len(lines) > 13 else None
-                    weight = lines[14].strip() if len(lines) > 14 else None
-                    style = lines[15].strip() if len(lines) > 15 else None
+                    material = attributes[12].strip() if len(attributes) > 12 else None
+                    height = attributes[13].strip() if len(attributes) > 13 else None
+                    weight = attributes[14].strip() if len(attributes) > 14 else None
+                    style = attributes[15].strip() if len(attributes) > 15 else None
                     secondary_Command = f"INSERT INTO SCULPTURE VALUES ('{ID_no}','{material}','{height}','{weight}','{style}');"
                 elif objType =='Other':
-                    other_type = lines[12].strip() if len(lines) > 12 else None
-                    style = lines[13].strip() if len(lines) > 13 else None
+                    other_type = attributes[12].strip() if len(attributes) > 12 else None
+                    style = attributes[13].strip() if len(attributes) > 13 else None
                     secondary_Command = f"INSERT INTO OTHER VALUES ('{ID_no}','{other_type}','{style}');"
 
                 cur.execute(art_obj_command)
@@ -795,6 +798,35 @@ def editArtists(cur, actionType = None):
         printData(cur.column_names, cur.fetchall(), 'Artist')
         print(200*'~')
         print()
+
+        insert_method = input('Would you like to insert from a csv file? (Y or N):')
+        while insert_method not in ['Y','N']:  insert_method = input('Invalid input. (Y or N): ')
+        if insert_method == 'Y':
+            file = input("Enter the text file name (must be in the same directory as this program): ")
+
+            with open(file, 'r') as f:
+                lines = f.readlines()
+            for line in lines:
+                attributes = line.strip().split(',')
+                
+                Artist_name = attributes[0].strip() if len(attributes) > 0 else None
+                Birth_year = attributes[1].strip() if len(attributes) > 1 else None
+                Death_year = attributes[2].strip() if len(attributes) > 2 else None
+                Country = attributes[3].strip() if len(attributes) > 3 else None
+                Epoch = attributes[4].strip() if len(attributes) > 4 else None
+                Style = attributes[5].strip() if len(attributes) > 5 else None
+                Descr = attributes[6].strip() if len(attributes) > 6 else None
+
+                artist_command = f"INSERT INTO ARTIST VALUES ('{Artist_name}','{Birth_year}','{Death_year}','{Country}','{Epoch}','{Style}','{Descr}');"
+                cur.execute(artist_command)
+                cur.execute("select * from artist;")
+                print(200*'~')
+                print("Artists after any changes")
+                print()
+                printData(cur.column_names, cur.fetchall(), 'Artist')
+                print(200*'~')
+                print()
+                return
         #Getting the name of the artist and checking that it doesn't already exist in the database
         selecting = True
         while selecting:
@@ -1232,6 +1264,46 @@ def editExhibitions(cur, actionType = None):
         printData(cur.column_names, cur.fetchall())
         print(200*'~')
         print()
+        insert_method = 'Would you like to insert from a csv file? (Y or N):'
+        while insert_method not in ['Y','N']:  insert_method = input('Invalid input. (Y or N): ')
+        if insert_method == 'Y':
+            file = input("Enter the text file name (must be in the same directory as this program): ")
+
+            with open(file, 'r') as f:
+                lines = f.readlines()
+            for line in lines:
+                attributes = line.strip().split(',')
+                
+                EX_ID = attributes[0].strip() if len(attributes) > 0 else None
+                Title = attributes[1].strip() if len(attributes) > 1 else None
+                Start_date = attributes[2].strip() if len(attributes) > 2 else None
+                End_date = attributes[3].strip() if len(attributes) > 3 else None
+                EX_name = attributes[4].strip() if len(attributes) > 4 else None
+
+                exhibition_command = f"INSERT INTO EXHIBITION VALUES ('{EX_ID}','{Title}','{Start_date}','{End_date}','{EX_name}');"
+                cur.execute(exhibition_command)
+                
+                cur.execute(f"select * from {tableName};")
+                print(200*'~')
+                print(f"{tableName} after any changes")
+                print()
+                printData(cur.column_names, cur.fetchall())
+                print(200*'~')
+                print()
+
+                #Prompting the user on if they want to see the changes to the displayed in table they added to as well
+                showArtTypeChanges = input("Would you like to see the changes to displayed in as well? (Y or N): ")
+                while showArtTypeChanges not in ['Y','N']:  showArtTypeChanges = input('Invalid input. (Y or N): ')
+                if showArtTypeChanges == 'Y':
+                    cur.execute(f"select * from displayed_in;")
+                    print(200*'~')
+                    print(f"displayed_in after inserts")
+                    print()
+                    printData(cur.column_names, cur.fetchall())
+                    print(200*'~')
+
+                    print()
+                    return
         #Getting the ID of the exhibition and checking that it isn't already exists in the database
         selecting = True
         while selecting:
