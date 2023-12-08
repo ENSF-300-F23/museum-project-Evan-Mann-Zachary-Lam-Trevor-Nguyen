@@ -22,7 +22,9 @@ CREATE TABLE ART_OBJECT (
     Object_type VARCHAR(9) NOT NULL,
     Artist_name VARCHAR(50),
     PRIMARY KEY (ID_no),
-    CONSTRAINT ARTOBJ CHECK (Object_type IN ('Painting', 'Sculpture', 'Statue', 'Other')),
+    CONSTRAINT ARTOBJ CHECK (
+        Object_type IN ('Painting', 'Sculpture', 'Statue', 'Other')
+    ),
     CONSTRAINT ARTCOL CHECK (Collection_type IN ('Borrowed', 'Permanent')),
     CONSTRAINT ARTFK FOREIGN KEY (Artist_name) REFERENCES ARTIST(Artist_name) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -65,7 +67,9 @@ CREATE TABLE PERMANENT_COLLECTION (
     Cost DECIMAL(10, 2),
     Date_acquired DATE,
     PRIMARY KEY (ID_no),
-    CONSTRAINT PERMOBJ CHECK (Object_status IN ('Displayed', 'Stored', 'Loaned')),
+    CONSTRAINT PERMOBJ CHECK (
+        Object_status IN ('Displayed', 'Stored', 'Loaned')
+    ),
     CONSTRAINT PERMFK FOREIGN KEY (ID_no) REFERENCES ART_OBJECT(ID_no) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE EXHIBITION (
@@ -577,8 +581,7 @@ VALUES (
         'Masterpieces of the Louvre',
         'Museum',
         'Artworks essential to history and the history of art',
-        '123 Rue de la Galerie
-Paris, France',
+        '123 Rue de la Galerie Paris, France',
         '33123456789',
         'Emily',
         'Parker'
@@ -587,8 +590,7 @@ Paris, France',
         'National Museums Recovery',
         'Museum',
         'Artworks retrieved in Germany after World War II.',
-        '789 Avenue de la Restitution
-Paris, France',
+        '789 Avenue de la Restitution Paris, France',
         '33198765432',
         'David',
         'Thompson'
