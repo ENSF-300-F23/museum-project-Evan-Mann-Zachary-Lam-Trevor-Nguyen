@@ -1107,8 +1107,8 @@ def editPermCollection(cur):
         else:
             uDate_acquired = input("Invalid date, please re enter the date when the artist was born (XXXX-XX-XX [year - month - day]): ")
 
-    if uDate_aqquired != '':
-        uDate_aqquired = 'date_aqquired=\'' + uDate_aqquired + '\','  
+    if uDate_acquired != '':
+        uDate_acquired = 'date_acquired=\'' + uDate_aqquired + '\','  
 
     setCommand = "SET " + uObjStatus + uCost + uDate_acquired
     if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]
