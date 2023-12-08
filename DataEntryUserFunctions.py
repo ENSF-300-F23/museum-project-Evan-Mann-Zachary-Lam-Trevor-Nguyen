@@ -1633,17 +1633,140 @@ def editDisplayedIn(cur, actionType = None):
             print("Invalid input")
             print()
 
+    if actionType == "INSERT":
+        pass
+    if actionType == "UPDATE":
+        #Print table before deletion 
         tableName = 'displayed_in'
-        print()
-        #display the current state of the collection table before changes
         cur.execute(f"select * from {tableName};")
         print(200*'~')
-        print("displayed in before any changes")
+        print(f"{tableName} before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
+        
+        print("Please input the art object ID and exhibition ID of the tuple you would like to edit")
+        print()
+
+        validTupleInput = False
+        while not validTupleInput:
+            #Getting the ID of the object and checking that it alreadys exist in the database
+            selecting = True
+            while selecting:
+                ID_no = input("Please input the ID number of the art object from this table: ")
+                if ID_no not in getCurDisplayedInIDs(cur):
+                    print("\nInvalid Input, Please input an ID of an art object that is already in an exhibition\n")
+                else:
+                    selecting = False
+
+
+            #Getting the ID of the exhibition and checking that it already exists in the database
+            selecting = True
+            while selecting:
+                EX_ID = input("Please input the ID of the exhibition you'd like to update the information of: ")
+                if EX_ID not in getCurExIDs(cur):
+                    print("\nInvalid Input, Please input an exhibition ID that is already in the database\n")
+                else:
+                    selecting = False
+
+            if (EX_ID, ID_no) not in getAllDisplayedTuples(cur):
+                print()
+                print("Invalid input, please input both IDs of the tuple you wish to edit")
+                print()
+            else:
+                validTupleInput = True
+        
+        while True:
+            print("Please now input the art object ID and exhibition ID you wish to change it to. Input nothing to keep it as the same")
+            #Getting the ID of the object and checking that it alreadys exist in the database
+            selecting = True
+            while selecting:
+                ID_no2 = input("Please input the ID number of any art object: ")
+                if ID_no2 == '':
+                    break
+                if ID_no2 not in getCurArtIDs(cur):
+                    print("\nInvalid Input, Please input an ID of an art object that is already in the database\n")
+                else:
+                    selecting = False
+            
+
+
+            #Getting the ID of the exhibition and checking that it already exists in the database
+            selecting = True
+            while selecting:
+                EX_ID2 = input("Please input the ID of the exhibition you'd like to update the information of: ")
+                if EX_ID == '':
+                    break
+                if EX_ID2 not in getCurExIDs(cur):
+                    print("\nInvalid Input, Please input an exhibition ID that is already in the database\n")
+                else:
+                    selecting = False
+
+            if (EX_ID2, ID_no2) in getAllDisplayedTuples(cur):
+                print("Invalid input, that art object is already displayed in that exhibition, please input a unique combination")
+            else:
+                break
+
+
+        if ID_no2 != '':
+            ID_no2 = 'ID_no = \'' + ID_no2 + '\',' 
+        
+        if EX_ID2 != '':
+            EX_ID2 = 'EID = \'' + EX_ID2 + '\',' 
+
+        setCommand = "SET " + EX_ID2 + ID_no2
+        if setCommand[len(setCommand) - 1] == ',': setCommand = setCommand[:len(setCommand) - 1]
+
+        if setCommand == 'SET ':
+            print('No changes were made')
+            return
+
+        print()
+        cur.execute(f"UPDATE {tableName} " + setCommand + f" WHERE EID = \'" + EX_ID + '\' and ID_no = \''+ ID_no + '\';')
+
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} after changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+
+    if actionType == "DELETE":
+        #Print table before deletion 
+        tableName = 'displayed_in'
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} before any changes")
         print()
         printData(cur.column_names, cur.fetchall())
         print(200*'~')
         print()
 
+        #Getting the ID of the object and checking that it alreadys exist in the database
+        selecting = True
+        while selecting:
+            ID_no = input("Please input the ID number of the art object to delete from this table: ")
+            if ID_no not in getCurDisplayedInIDs(cur):
+                print("\nInvalid Input, Please input an ID of an art object that is already in an exhibition\n")
+            else:
+                selecting = False
+        
+        print()
+        print('Object removed from exhibition')
+        print()
+
+        cur.execute(f"DELETE FROM displayed_in WHERE ID_no = " + ID_no)
+
+        #Print table after deletion
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
+        
 
 
 #Data entry console
@@ -1693,6 +1816,6 @@ def data_entry_console(cur):
 
         if mLevelOneChoice == '0':
             break
-        elif mLevelOneChoice not in ['0','1','2','3','4','5','6']:
+        elif mLevelOneChoice not in ['0','1','2','3','4','5','6','7']:
             print("Invalid Option")
             print()

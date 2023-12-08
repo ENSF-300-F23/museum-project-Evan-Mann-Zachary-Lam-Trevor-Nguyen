@@ -42,6 +42,16 @@ def getCurBorrowCollectIDs(cur):
     searchResult = cur.fetchall()
     return [str(x[0]) for x in searchResult]
 
+def getAllDisplayedTuples(cur):
+    cur.execute("select * from displayed_in;")
+    searchResult = cur.fetchall()
+    return searchResult
+
+def getCurDisplayedInIDs(cur):
+    cur.execute("select ID_no from displayed_in;")
+    searchResult = cur.fetchall()
+    return [str(x[0]) for x in searchResult]
+
 def getCurExIDs(cur):
     cur.execute("select EX_ID from Exhibition;")
     searchResult = cur.fetchall()
