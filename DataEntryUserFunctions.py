@@ -93,43 +93,43 @@ def editArtObj(cur, actionType = None):
                 cur.execute(ternaryCommand)
 
                 cur.execute("select * from art_object;")
-            print(200*'~')
-            print("Art Objects after insert")
-            print()
-            printData(cur.column_names, cur.fetchall(), 'Art Object')
-            print(200*'~')
-
-            print()
-
-            #Prompting the user on if they want to see the changes to the specific object type table they added to as well
-            showArtTypeChanges = input(f"{objType} has had an insert as well, would you like to see those changes? (Y or N): ")
-            while showArtTypeChanges not in ['Y','N']:  showArtTypeChanges = input('Invalid input. (Y or N): ')
-            if showArtTypeChanges == 'Y':
-                cur.execute(f"select * from {objType};")
                 print(200*'~')
-                print(f"{objType} after insert")
+                print("Art Objects after insert")
                 print()
-                printData(cur.column_names, cur.fetchall())
+                printData(cur.column_names, cur.fetchall(), 'Art Object')
                 print(200*'~')
 
                 print()
 
-            #Prompting the user if they want to see the changes to the specific collection type table they added to as wel
-            showCollectionTypeChanges = input(f"{Collection_type} collection has had an insert as well, would you like to see those changes? (Y or N): ")
-            while showCollectionTypeChanges not in ['Y','N']:  showCollectionTypeChanges = input('Invalid input. (Y or N): ')
-            if showCollectionTypeChanges == 'Y':
+                #Prompting the user on if they want to see the changes to the specific object type table they added to as well
+                showArtTypeChanges = input(f"{objType} has had an insert as well, would you like to see those changes? (Y or N): ")
+                while showArtTypeChanges not in ['Y','N']:  showArtTypeChanges = input('Invalid input. (Y or N): ')
+                if showArtTypeChanges == 'Y':
+                    cur.execute(f"select * from {objType};")
+                    print(200*'~')
+                    print(f"{objType} after insert")
+                    print()
+                    printData(cur.column_names, cur.fetchall())
+                    print(200*'~')
 
-                c = 'PERMANENT_COLLECTION' if Collection_type == 'Permanent' else 'BORROWED'
+                    print()
 
-                cur.execute(f"select * from {c};")
-                print(200*'~')
-                print(f"{c} after insert")
-                print()
-                printData(cur.column_names, cur.fetchall())
-                print(200*'~')
+                #Prompting the user if they want to see the changes to the specific collection type table they added to as wel
+                showCollectionTypeChanges = input(f"{Collection_type} collection has had an insert as well, would you like to see those changes? (Y or N): ")
+                while showCollectionTypeChanges not in ['Y','N']:  showCollectionTypeChanges = input('Invalid input. (Y or N): ')
+                if showCollectionTypeChanges == 'Y':
 
-                print()
-                return
+                    c = 'PERMANENT_COLLECTION' if Collection_type == 'Permanent' else 'BORROWED'
+
+                    cur.execute(f"select * from {c};")
+                    print(200*'~')
+                    print(f"{c} after insert")
+                    print()
+                    printData(cur.column_names, cur.fetchall())
+                    print(200*'~')
+
+                    print()
+                    return
 
         #Getting the ID of the object and checking that it doesn't already exist in the database
         selecting = True
