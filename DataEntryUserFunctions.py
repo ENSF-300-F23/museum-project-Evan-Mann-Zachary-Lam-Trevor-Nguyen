@@ -514,7 +514,7 @@ def editArtObj(cur, actionType = None):
                 print(200*'~')
                 print(f"{tableName} before any changes")
                 print()
-                printData(cur.column_names, cur.fetchall(), 'Art Object')
+                printData(cur.column_names, cur.fetchall())
                 print(200*'~')
                 print()
                 #Getting the ID of the object and checking that it alreadys exist in the database
@@ -1706,7 +1706,53 @@ def editDisplayedIn(cur, actionType = None):
             print()
 
     if actionType == "INSERT":
-        pass
+
+        #Print table before deletion 
+        tableName = 'displayed_in'
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} before any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
+
+        while True:
+            #Getting the ID of the object and checking that it alreadys exist in the database
+            selecting = True
+            while selecting:
+                ID_no = input("Please input the ID number of any art object: ")
+                if ID_no not in getCurArtIDs(cur):
+                    print("\nInvalid Input, Please input an ID of an art object that is already in the database\n")
+                else:
+                    selecting = False
+            
+
+
+            #Getting the ID of the exhibition and checking that it already exists in the database
+            selecting = True
+            while selecting:
+                EX_ID = input("Please input the ID of the exhibition you'd like to update the information of: ")
+                if EX_ID not in getCurExIDs(cur):
+                    print("\nInvalid Input, Please input an exhibition ID that is already in the database\n")
+                else:
+                    selecting = False
+
+            if (EX_ID, ID_no) in getAllDisplayedTuples(cur):
+                print("Invalid input, that art object is already displayed in that exhibition, please input a unique combination")
+            else:
+                break
+        
+        cur.execute(f"INSERT INTO DISPLAYED_IN VALUES (EID = '{EX_ID}', ID_no = '{ID_no}')")
+
+        cur.execute(f"select * from {tableName};")
+        print(200*'~')
+        print(f"{tableName} after any changes")
+        print()
+        printData(cur.column_names, cur.fetchall())
+        print(200*'~')
+        print()
+
     if actionType == "UPDATE":
         #Print table before deletion 
         tableName = 'displayed_in'
